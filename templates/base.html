@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Website{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        nav { background: #333; padding: 0 20px; }
+        nav a { display: inline-block; color: white; padding: 14px 20px; text-decoration: none; }
+        nav a:hover { background: #555; }
+        .content { padding: 20px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('works') }}">Works</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
