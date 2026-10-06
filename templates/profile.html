@@ -1,11 +1,39 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}Profile{% endblock %}
 {% block content %}
-    <h1>Welcome to your Profile Page</h1>
-    <p>This is a simple profile page rendered using Flask's templating.</p>
-    <p>Create your profile here with Name, section , course, subject and display your favorite sayings or motto! using html tags </p>
+<section class="section">
+  <img class="avatar" src="{{ url_for('static', filename='images/profile_pic.jpeg') }}" alt="Profile Picture">
+  <h1>About Me</h1>
+  <p class="tagline">Curious learner, careful builder.</p>
+  <p class="welcome">Hi, nice to meet you! Here's a little about who I am and what I'm learning.</p>
+  <p>
+    I'm a Computer Engineering student who enjoys turning ideas into working programs.
+    I like clean, simple designs, and I'm always picking up something new, one project at a time.
+  </p>
 
-    <h2>Introduction</h2>
-    <p>Name: Sarah Grace J. Gruy</p>
-    <p>CYS: BSCpE 2-1</p>
+  <div class="info-grid">
+    <div class="info"><h3>Name</h3><p>Sarah Grace J. Gruy</p></div>
+    <div class="info"><h3>Section</h3><p>BSCpE 2-1</p></div>
+    <div class="info"><h3>Course</h3><p>BS Computer Engineering</p></div>
+    <div class="info"><h3>Subject</h3><p>Data Structures and Algorithms</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Skills</h2>
+  <div class="chips">
+    <span class="chip">Python</span><span class="chip">Flask</span>
+    <span class="chip">HTML</span><span class="chip">CSS</span>
+    <span class="chip">Data Structures</span>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Interests</h2>
+  <div class="chips">
+    <span class="chip">Programming</span><span class="chip">Problem solving</span>
+    <span class="chip">Design</span><span class="chip">Learning new things</span>
+  </div>
+  <p class="motto">&ldquo;Small steps every day lead to big things.&rdquo;</p>
+</section>
 {% endblock %}

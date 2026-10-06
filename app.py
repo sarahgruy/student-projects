@@ -1,22 +1,30 @@
 from flask import Flask, render_template, request
+from Lab_3 import linked_bp
 
 app = Flask(__name__)
+app.secret_key = "dev-secret-key"
+app.register_blueprint(linked_bp)
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html')
+
 
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
 
+
 @app.route('/works')
 def works():
     return render_template('works.html')
+
 
 @app.route('/works/touppercase', methods=['GET', 'POST'])
 def touppercase():
@@ -26,6 +34,7 @@ def touppercase():
         result = input_string.upper()
     return render_template('touppercase.html', result=result)
 
+
 @app.route('/works/area/circle', methods=['GET', 'POST'])
 def acircle():
     result = None
@@ -33,6 +42,7 @@ def acircle():
         radius = float(request.form.get('radius', 0) or 0)
         result = 3.14 * radius * radius
     return render_template('circle.html', result=result)
+
 
 @app.route('/works/area/triangle', methods=['GET', 'POST'])
 def atriangle():
@@ -42,6 +52,7 @@ def atriangle():
         height = float(request.form.get('height', 0) or 0)
         result = 0.5 * base * height
     return render_template('triangle.html', result=result)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

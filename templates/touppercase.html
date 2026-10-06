@@ -1,15 +1,14 @@
-{% extends 'base.html' %}
-{% block title %}toUpperCase{% endblock %}
+{% extends "base.html" %}
+{% block title %}Convert String to Uppercase{% endblock %}
 {% block content %}
-    <h1>Convert String to Uppercase</h1>
-
-    <form action="/works" method="post">
-        <label for="inputString">Enter a string:</label>
-        <input type="text" id="inputString" name="inputString">
-        <input type="submit" value="Convert">
-    </form>
-
-    {% if result %}
-    <p>Converted string: {{ result }}</p>
-    {% endif %}
+<section class="section">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Convert String to Uppercase</h1>
+  <p class="welcome">Type anything below and I'll turn it into capital letters.</p>
+  <form method="post">
+    <div><label for="inputString">Enter a string</label><input id="inputString" name="inputString" type="text" placeholder="Type here..." required></div>
+    <button type="submit">Convert</button>
+  </form>
+  {% if result %}<p class="result" role="status">{{ result }}</p>{% endif %}
+</section>
 {% endblock %}

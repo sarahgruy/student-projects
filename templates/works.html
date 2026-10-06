@@ -1,11 +1,30 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}Works{% endblock %}
 {% block content %}
-    <h1>Welcome to my programming works</h1>
-    <p>Instruction: create a route and a page for the link that are not working</p>
-    <ul>
-        <li><a href="{{ url_for('touppercase') }}">toUpperCase</a></li>
-        <li><a href="{{ url_for('acircle') }}">Area of a Circle</a></li>
-        <li><a href="{{ url_for('atriangle') }}">Area of a Triangle</a></li>
-    </ul>
+{# Change this to the real URL of your linked list page (from Lab_3.py) #}
+{% set linked_url = '/works/linkedlist' %}
+
+<section class="section">
+  <h1>Welcome to my programming works</h1>
+  <p class="welcome">Pick a project to open it and give it a try.</p>
+
+  <div class="grid">
+    <a class="work-card" href="{{ url_for('touppercase') }}">
+      <img src="{{ url_for('static', filename='images/toUpper.png') }}" alt="Lowercase letters turning into capitals">
+      <div class="body"><h3>toUpperCase</h3><p>Turns any text you type into capital letters.</p></div>
+    </a>
+    <a class="work-card" href="{{ url_for('acircle') }}">
+      <img src="{{ url_for('static', filename='images/area.png') }}" alt="A circle with its radius marked">
+      <div class="body"><h3>Area of a Circle</h3><p>Enter a radius and get the area.</p></div>
+    </a>
+    <a class="work-card" href="{{ url_for('atriangle') }}">
+      <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="A triangle with base and height marked">
+      <div class="body"><h3>Area of a Triangle</h3><p>Enter a base and height to find the area.</p></div>
+    </a>
+    <a class="work-card" href="{{ linked_url }}">
+      <img src="{{ url_for('static', filename='images/node.jpeg') }}" alt="Three connected linked list nodes">
+      <div class="body"><h3>Linked List</h3><p>Insert, search and delete values in a list.</p></div>
+    </a>
+  </div>
+</section>
 {% endblock %}

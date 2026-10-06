@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{% block title %}My Website{% endblock %}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; }
-        nav { background: #333; padding: 0 20px; }
-        nav a { display: inline-block; color: white; padding: 14px 20px; text-decoration: none; }
-        nav a:hover { background: #555; }
-        .content { padding: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}My Website{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('profile') }}">Profile</a>
-        <a href="{{ url_for('works') }}">Works</a>
-        <a href="{{ url_for('contact') }}">Contact</a>
-    </nav>
+  <nav class="navbar" aria-label="Main navigation">
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Home</a></li>
+      <li><a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}aria-current="page"{% endif %}>Profile</a></li>
+      <li><a href="{{ url_for('works') }}" {% if request.endpoint in ['works','touppercase','acircle','atriangle'] or (request.endpoint or '').startswith('linked') %}aria-current="page"{% endif %}>Works</a></li>
+      <li><a href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}aria-current="page"{% endif %}>Contact</a></li>
+    </ul>
+  </nav>
 
-    <div class="content">
-        {% block content %}{% endblock %}
-    </div>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer><p>&copy; 2026 Sarah Grace J. Gruy</p></footer>
 </body>
 </html>

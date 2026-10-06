@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Area of a Triangle{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Area of a Triangle</h1>
+  <p class="welcome">Give me the base and height, and I'll do the math.</p>
+  <form method="post">
+    <div><label for="base">Base</label><input id="base" name="base" type="number" step="any" min="0" placeholder="e.g. 10" required></div>
+    <div><label for="height">Height</label><input id="height" name="height" type="number" step="any" min="0" placeholder="e.g. 6" required></div>
+    <button type="submit">Calculate</button>
+  </form>
+  {% if result is not none %}<p class="result" role="status">Area = {{ "%.2f"|format(result) }}</p>{% endif %}
+</section>
+{% endblock %}

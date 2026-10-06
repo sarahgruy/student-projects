@@ -1,15 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}Area of a Circle{% endblock %}
 {% block content %}
-    <h1>area of circle</h1>
-
-    <form action="/works/area/circle" method="post">
-        <label for="radius">Enter a radius:</label>
-        <input type="text" id="radius" name="radius">
-        <input type="submit" value="Compute">
-    </form>
-
-    {% if result %}
-    <p>Area of the circle: {{ result }}</p>
-    {% endif %}
+<section class="section">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Area of a Circle</h1>
+  <p class="welcome">Enter the radius and I'll work out the area for you.</p>
+  <form method="post">
+    <div><label for="radius">Enter a radius</label><input id="radius" name="radius" type="number" step="any" min="0" placeholder="e.g. 5" required></div>
+    <button type="submit">Compute</button>
+  </form>
+  {% if result is not none %}<p class="result" role="status">Area = {{ "%.2f"|format(result) }}</p>{% endif %}
+</section>
 {% endblock %}
