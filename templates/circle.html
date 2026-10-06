@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Convert to Uppercase</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Area of a Circle{% endblock %}
+{% block content %}
     <h1>area of circle</h1>
 
     <form action="/works/area/circle" method="post">
@@ -15,5 +12,4 @@
     {% if result %}
     <p>Area of the circle: {{ result }}</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}

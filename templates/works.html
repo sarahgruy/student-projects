@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Works{% endblock %}
+{% block content %}
+    <h1>Welcome to my programming works</h1>
+    <p>Instruction: create a route and a page for the link that are not working</p>
+    <ul>
+        <li><a href="{{ url_for('touppercase') }}">toUpperCase</a></li>
+        <li><a href="{{ url_for('acircle') }}">Area of a Circle</a></li>
+        <li><a href="{{ url_for('atriangle') }}">Area of a Triangle</a></li>
+    </ul>
+{% endblock %}

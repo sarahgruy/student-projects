@@ -10,8 +10,16 @@ def index():
 def profile():
     return render_template('profile.html')
 
-@app.route('/works', methods=['GET', 'POST'])
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+@app.route('/works')
 def works():
+    return render_template('works.html')
+
+@app.route('/works/touppercase', methods=['GET', 'POST'])
+def touppercase():
     result = None
     if request.method == 'POST':
         input_string = request.form.get('inputString', '')
@@ -22,23 +30,18 @@ def works():
 def acircle():
     result = None
     if request.method == 'POST':
-        radius = request.form.get('radius', '')
-        result = int(radius)*3.14*int(radius)
+        radius = float(request.form.get('radius', 0) or 0)
+        result = 3.14 * radius * radius
     return render_template('circle.html', result=result)
 
-# @app.route('/areaOfcirle', methods=['GET', 'POST'])
-# def areaOfcirle():
-#     result = None
-#     name=request.get('name','')
-#     print(name)
-#     if request.method == 'POST':
-#         input_string = request.form.get('inputradius', '')
-#         result = int(input_string) * int(input_string) * 3.14
-#     return render_template('areaCircle.html', result=result)
- 
-@app.route('/contact')
-def contact():
-    return "Contact Page. please create me an html page with dummy contact info"
+@app.route('/works/area/triangle', methods=['GET', 'POST'])
+def atriangle():
+    result = None
+    if request.method == 'POST':
+        base = float(request.form.get('base', 0) or 0)
+        height = float(request.form.get('height', 0) or 0)
+        result = 0.5 * base * height
+    return render_template('triangle.html', result=result)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
