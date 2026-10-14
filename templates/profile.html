@@ -1,38 +1,69 @@
 {% extends "base.html" %}
 {% block title %}Profile{% endblock %}
+{% block bodyclass %}page-profile{% endblock %}
 {% block content %}
-<section class="section">
-  <img class="avatar" src="{{ url_for('static', filename='images/profile_pic.jpeg') }}" alt="Profile Picture">
-  <h1>About Me</h1>
-  <p class="tagline">Faithful learner, Persistent dreamer.</p>
-  <p class="welcome">Hi, nice to meet you! Here's a little about who I am and what I'm learning.</p>
-  <p>
-    I'm a Computer Engineering student, an avid reader, and a curious explorer of anything new.
-    I take interests in the hows and whys behind technologies and systems that shape the world around us. 
-  </p>
+<div class="stage">
+  <svg class="deco p-a" style="--petal:#f1c9bd"><use href="#flower"/></svg>
+  <svg class="deco p-b" style="--leaf:#9db08f"><use href="#sprig"/></svg>
+  <svg class="deco p-c" style="--petal:#fff4ea;--heart:#e9b8a6"><use href="#flower"/></svg>
+  <svg class="deco p-d" style="--petal:#e9c3b6"><use href="#flower"/></svg>
+  <svg class="deco p-e" style="--leaf:#9db08f"><use href="#sprig"/></svg>
 
-  <div class="info-grid">
-    <div class="info"><h3>Name</h3><p>Sarah Grace J. Gruy</p></div>
-    <div class="info"><h3>Program</h3><p>BS Computer Engineering</p></div>
-    <div class="info"><h3>Section</h3><p>BSCpE 2-1</p></div>
-    <div class="info"><h3>Course</h3><p>Data Structures and Algorithms</p></div>
-  </div>
-</section>
+  <section class="profile">
+    <header class="about-head">
+      <img class="avatar" src="{{ url_for('static', filename='images/profilepic.jpeg') }}" alt="Profile picture of Sarah">
+      <div>
+        <p class="script">about me</p>
+        <h1>Sarah Grace Gruy</h1>
+        <p class="about-sub">Computer Engineering student, BSCpE 2-1</p>
+        <p class="about-sub">Polytechnic University of the Philippines</p>
+        <p class="tagline">Faithful learner, Persistent dreamer.</p>
+      </div>
+    </header>
+  </section>
 
-<section class="section">
-  <h2>Skills</h2>
-  <div class="chips">
-    <span class="chip">Python</span><span class="chip">SQL</span>
-    <span class="chip">HTML</span><span class="chip">Data Structures</span>
-  </div>
-</section>
+  <section class="about-band" aria-label="More about me">
+    <div class="band-inner">
+      <h2 class="band-title">a little more about me</h2>
 
-<section class="section">
-  <h2>Interests</h2>
-  <div class="chips">
-    <span class="chip">Crafts</span><span class="chip">Programming</span>
-    <span class="chip">Reading</span><span class="chip">Music</span>
-  </div>
-  <p class="motto">&ldquo;To be is to do. Do be do be do&rdquo;</p>
-</section>
+      <div class="trio">
+        <article class="bcol">
+          <span class="orb orb-lilac" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 5l-4 14"/></svg></span>
+          <h3>I build</h3>
+          <p>small <a href="{{ url_for('works') }}">programs</a>, from calculators to data structures.</p>
+        </article>
+        <article class="bcol">
+          <span class="orb orb-rose" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></span>
+          <h3>I wonder</h3>
+          <p>I love the hows and whys behind the technologies and systems that shape our world, and I explore anything new that makes me curious!</p>
+        </article>
+        <article class="bcol">
+          <span class="orb orb-gold" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5.5C5.5 4.3 8.5 4.5 12 6.5c3.5-2 6.5-2.2 9-1V18c-2.5-1.2-5.5-1-9 1-3.5-2-6.5-2.2-9-1z"/><path d="M12 6.5V19"/></svg></span>
+          <h3>I enjoy</h3>
+          <p>reading a lot, making crafts, and listening to music.</p>
+        </article>
+      </div>
+
+      <div class="duo">
+        <div class="bcol">
+          <h3>Skills</h3>
+          <div class="chips">
+            <span class="chip">Python</span><span class="chip">SQL</span>
+            <span class="chip">HTML</span><span class="chip">Data Structures</span>
+          </div>
+        </div>
+        <div class="bcol">
+          <h3>Interests</h3>
+          <div class="chips">
+            <span class="chip">Crafts</span><span class="chip">Programming</span>
+            <span class="chip">Reading</span><span class="chip">Music</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="band-motto">&ldquo;To be is to do. Do be do be do&rdquo;</p>
+      <p class="band-foot">want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
+    </div>
+  </section>
+</div>
 {% endblock %}

@@ -132,7 +132,7 @@ class LinkedList:
         return None
 
 
-# ---------- Web page for the linked list ----------
+# --------------------- Web part for the link list --------------------------------------
 
 linked_bp = Blueprint('linked', __name__)
 

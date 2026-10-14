@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}Stack{% endblock %}
+{% block bodyclass %}page-tool page-stack{% endblock %}
+{% block content %}
+<section class="tool-card ll st">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Stack</h1>
+  <p class="welcome">A stack is last in, first out: the last value you push is the first one you pop.</p>
+
+  {# ---------- messages for push / pop / peek ---------- #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for kind, msg in messages %}<div class="result {{ kind }}" role="status">{{ msg }}</div>{% endfor %}
+  {% endwith %}
+
+  {# ---------- part 1: the stack ---------- #}
+  <div class="grid">
+    <section class="panel">
+      <h2>The stack</h2>
+      <div class="stats">
+        <span>Size <b>{{ items|length }}</b></span>
+        <span>Top <b>{{ items[0] if items else 'null' }}</b></span>
+        <span>Bottom <b>{{ items[-1] if items else 'null' }}</b></span>
+      </div>
+      <div class="stack-wrap">
+        <div class="stack-arrows" aria-hidden="true"><span>push &darr;</span><span>pop &uarr;</span></div>
+        {% if items %}
+        <ol class="vstack" aria-label="Stack, top first">
+          {% for item in items %}
+          <li class="slot {{ hk if loop.first and hk else '' }}">
+            <span class="slot-val">{{ item }}</span>
+            <span class="slot-tags">
+              {% if loop.first %}<span class="tag">top</span>{% endif %}
+              {% if loop.last %}<span class="tag tail">bottom</span>{% endif %}
+            </span>
+          </li>
+          {% endfor %}
+        </ol>
+        {% else %}
+          <p class="empty">The stack is empty. Push a value, or load the sample.</p>
+        {% endif %}
+        <div class="floor" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <div>
+      <section class="panel">
+        <h2>Operations</h2>
+        <form method="post" action="{{ url_for('stack.stack_page') }}">
+          <button class="sr" type="submit" name="action" value="push" tabindex="-1" aria-hidden="true">Push</button>
+          <div class="fields one">
+            <div><label for="value">Value</label>
+            <input type="text" id="value" name="value" autocomplete="off" autofocus placeholder="e.g. 25"></div>
+          </div>
+          <div class="group"><h3>Add &amp; remove</h3>
+            <div class="btns">
+              <button class="b add" type="submit" name="action" value="push">Push</button>
+              <button class="b del" type="submit" name="action" value="pop">Pop</button>
+              <button class="b" type="submit" name="action" value="peek">Peek</button>
+            </div>
+          </div>
+          <div class="group"><h3>Stack</h3>
+            <div class="btns">
+              <button class="b" type="submit" name="action" value="sample">Load sample</button>
+              <button class="b" type="submit" name="action" value="clear">Clear stack</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  {# ---------- part 2: infix to postfix ---------- #}
+  <section class="panel gap" id="infix">
+    <h2>Infix to postfix</h2>
+    <p class="note">A stack can also convert an expression. Type a normal (infix) expression and see it as postfix, where each operator comes after its operands. You can use numbers, letters, <code>+ - * / % ^</code> and parentheses.</p>
+    <form method="get" action="{{ url_for('stack.stack_page') }}#infix" class="inline-form">
+      <label for="expr" class="sr-only">Infix expression</label>
+      <input type="text" id="expr" name="expr" value="{{ expr }}" autocomplete="off" placeholder="e.g. (A + B) * C - D / E">
+      <button class="b add" type="submit">Convert</button>
+    </form>
+    <p class="examples">Try:
+      {% for ex in ['A + B * C', '(A + B) * C', 'A * (B + C) / D', '2 ^ 3 ^ 2', '(1 + 2) * (3 - 4)'] %}
+        <a class="chip-link" href="{{ url_for('stack.stack_page', expr=ex) }}#infix">{{ ex }}</a>
+      {% endfor %}
+    </p>
+
+    {% if error %}
+      <div class="result error gap" role="alert">{{ error }}</div>
+    {% endif %}
+
+    {% if postfix is defined %}
+    <div class="answer gap"><small>Postfix</small>{{ postfix }}</div>
+    <h3 class="sub">Step by step</h3>
+    <p class="note">Operators wait on the stack until it is their turn. The stack is drawn with its top on the left.</p>
+    <div class="scroll-x">
+      <table class="steps">
+        <thead><tr><th>Token</th><th>What happens</th><th>Stack (top first)</th><th>Output so far</th></tr></thead>
+        <tbody>
+        {% for s in steps %}
+          <tr>
+            <td><span class="tok">{{ s.token }}</span></td>
+            <td>{{ s.action }}</td>
+            <td>{% if s.stack %}{% for x in s.stack %}<span class="tok sm">{{ x }}</span>{% endfor %}{% else %}<span class="muted">empty</span>{% endif %}</td>
+            <td class="mono">{{ s.output or '-' }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}

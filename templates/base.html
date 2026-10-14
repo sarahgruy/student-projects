@@ -3,18 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}My Website{% endblock %}</title>
+  <title>{% block title %}Sarah's Corner{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="{% block bodyclass %}{% endblock %}">
+  <!-- decorative flower sprite (reused on Home, Profile and Works) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="flower" viewBox="0 0 100 100">
+        <g fill="var(--petal,#e9c3b6)">
+          <circle cx="50" cy="22" r="17"/><circle cx="76.7" cy="41.4" r="17"/><circle cx="66.5" cy="72.8" r="17"/>
+          <circle cx="33.5" cy="72.8" r="17"/><circle cx="23.3" cy="41.4" r="17"/>
+        </g>
+        <circle cx="50" cy="50" r="12" fill="var(--heart,#f8ebc4)"/>
+      </symbol>
+      <symbol id="sprig" viewBox="0 0 60 120">
+        <path d="M30 118 C28 80 32 40 30 4" fill="none" stroke="var(--leaf,#a9bb9d)" stroke-width="3" stroke-linecap="round"/>
+        <g fill="var(--leaf,#a9bb9d)">
+          <ellipse cx="18" cy="86" rx="14" ry="7" transform="rotate(-35 18 86)"/><ellipse cx="42" cy="66" rx="14" ry="7" transform="rotate(35 42 66)"/>
+          <ellipse cx="18" cy="46" rx="13" ry="6.5" transform="rotate(-35 18 46)"/><ellipse cx="42" cy="26" rx="12" ry="6" transform="rotate(35 42 26)"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
   <nav class="navbar" aria-label="Main navigation">
     <ul class="nav-links">
       <li><a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}aria-current="page"{% endif %}>Home</a></li>
       <li><a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}aria-current="page"{% endif %}>Profile</a></li>
-      <li><a href="{{ url_for('works') }}" {% if request.endpoint in ['works','touppercase','acircle','atriangle'] or (request.endpoint or '').startswith('linked') %}aria-current="page"{% endif %}>Works</a></li>
+      <li><a href="{{ url_for('works') }}" {% if request.endpoint in ['works','touppercase','acircle','atriangle'] or (request.endpoint or '').startswith('linked') or (request.endpoint or '').startswith('stack') %}aria-current="page"{% endif %}>Works</a></li>
       <li><a href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}aria-current="page"{% endif %}>Contact</a></li>
     </ul>
   </nav>
@@ -23,6 +43,5 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer><p>&copy; 2026 Sarah Grace J. Gruy</p></footer>
 </body>
 </html>

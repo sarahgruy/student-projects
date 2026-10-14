@@ -1,29 +1,89 @@
 {% extends "base.html" %}
+{% from "_socials.html" import social_icons %}
 {% block title %}Contact{% endblock %}
+{% block bodyclass %}page-contact{% endblock %}
 {% block content %}
-<section class="section">
-  <h1>Let's Get in Touch</h1>
-  <p class="welcome">Thanks for stopping by! Whether you have a question, some feedback, or just want to say hi, I'd love to hear from you and will reply as soon as I can.</p>
+<section class="contact-hero" aria-label="Hello, World">
+  <svg class="scene" viewBox="0 0 1200 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d9c8e6"/>
+        <stop offset="0.55" stop-color="#f1d3d6"/>
+        <stop offset="1" stop-color="#fbe3cf"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="440" fill="url(#sky)"/>
+    <!-- sun -->
+    <circle cx="930" cy="150" r="62" fill="#fff1d6" opacity=".9"/>
+    <circle cx="930" cy="150" r="92" fill="#fff1d6" opacity=".35"/>
+    <!-- clouds -->
+    <g fill="#fff" opacity=".75">
+      <ellipse cx="190" cy="120" rx="80" ry="20"/><ellipse cx="240" cy="105" rx="46" ry="20"/>
+      <ellipse cx="640" cy="70" rx="70" ry="16"/><ellipse cx="690" cy="58" rx="38" ry="15"/>
+      <ellipse cx="1080" cy="260" rx="60" ry="14"/>
+    </g>
+    <!-- sparkles -->
+    <g fill="#fff" opacity=".9">
+      <path d="M120 60l5 15 15 5-15 5-5 15-5-15-15-5 15-5z"/>
+      <path d="M520 150l4 11 11 4-11 4-4 11-4-11-11-4 11-4z"/>
+      <path d="M1100 80l4 11 11 4-11 4-4 11-4-11-11-4 11-4z"/>
+      <circle cx="380" cy="50" r="3"/><circle cx="780" cy="110" r="3"/><circle cx="60" cy="200" r="2.500"/>
+    </g>
+    <!-- far hills -->
+    <path d="M0 330 Q200 250 420 320 T820 310 T1200 300 V440 H0z" fill="#cfd9c6"/>
+    <!-- near hill -->
+    <path d="M0 380 Q260 320 520 370 T1200 350 V440 H0z" fill="#b3c4a8"/>
+    <!-- little cottage -->
+    <g transform="translate(780 262)">
+      <rect x="0" y="40" width="96" height="64" rx="4" fill="#fff4ea"/>
+      <path d="M-10 46 L48 0 L106 46z" fill="#d89a86"/>
+      <rect x="38" y="66" width="20" height="38" rx="10" fill="#b5755a"/>
+      <rect x="10" y="58" width="16" height="16" rx="3" fill="#f6d28c"/>
+      <rect x="70" y="58" width="16" height="16" rx="3" fill="#f6d28c"/>
+      <path d="M72 14v-26h12v36z" fill="#c98873"/>
+    </g>
+    <!-- tiny tree + flowers -->
+    <g transform="translate(250 290)">
+      <rect x="-4" y="30" width="8" height="56" fill="#8a6a55"/>
+      <circle cx="0" cy="20" r="38" fill="#9fb594"/><circle cx="-24" cy="40" r="24" fill="#aec3a3"/><circle cx="24" cy="42" r="22" fill="#aec3a3"/>
+      <circle cx="-10" cy="10" r="5" fill="#f3c2c0"/><circle cx="16" cy="26" r="5" fill="#f3c2c0"/><circle cx="-20" cy="40" r="4" fill="#f3c2c0"/>
+    </g>
+  </svg>
+  <div class="contact-hero-text">
+    <h1>Hello, World.</h1>
+    <p>Let&rsquo;s share a conversation</p>
+  </div>
+</section>
 
-  <ul class="contact-list">
-    <li>Email: <a href="mailto:sarahgruy@egmail.com">sarahgruy@example.com</a></li>
-    <li>GitHub: <a href="https://github.com/sarahgruy" target="_blank" rel="noopener">github.com/sarahgruy</a></li>
-    <li>LinkedIn: <a href="https://linkedin.com/in/sarah-grace-gruy-b1aa14438" target="_blank" rel="noopener">linkedin.com/in/sarah-grace-gruy-b1aa14438</a></li>
-  </ul>
+<section class="contact-body">
+  <div class="contact-info">
+    <svg class="envelope" viewBox="0 0 48 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="42" height="30" rx="5"/><path d="M5 8l19 14L43 8"/></svg>
+    <h2>Have something on your mind?</h2>
+    <p>Feel free to reach out via email or simply leave me a message. I'm always open to new ideas, meaningful conversations, and connecting with people.</p>
+    <p class="email-line"><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+    <p class="or-line">Or use the contact form.</p>
+    {{ social_icons(socials, 'contact-icons') }}
+  </div>
 
-  <p>Prefer to write a message right here? Open the form below.</p>
+  <div class="contact-form-wrap" id="contact-form">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for kind, msg in messages %}
+        <div class="notice {{ kind }}" role="status">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
 
-  <details class="reveal">
-    <summary>Send me a message</summary>
-    <form action="mailto:sarahgruy@example.com" method="post" enctype="text/plain">
+    <form method="post" action="{{ url_for('contact') }}#contact-form" class="contact-form">
+      <h2>Say hello &#10022;</h2>
       <div class="field-row">
-        <div><label for="first">First name</label><input id="first" name="first_name" type="text" required></div>
-        <div><label for="last">Last name</label><input id="last" name="last_name" type="text" required></div>
+        <div><label for="first">First name</label><input id="first" name="first_name" type="text" autocomplete="given-name" required></div>
+        <div><label for="last">Last name</label><input id="last" name="last_name" type="text" autocomplete="family-name"></div>
       </div>
-      <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
-      <div><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
-      <button type="submit">Send message</button>
+      <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div><label for="message">Your message</label><textarea id="message" name="message" rows="5" required></textarea></div>
+      {# hidden spam trap: leave empty #}
+      <div class="hp" aria-hidden="true"><label>Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" class="send-btn">Send message <span aria-hidden="true">&rarr;</span></button>
     </form>
-  </details>
+  </div>
 </section>
 {% endblock %}

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Area of a Triangle{% endblock %}
+{% block bodyclass %}page-tool{% endblock %}
 {% block content %}
-<section class="section">
+<section class="tool-card">
   <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
   <h1>Area of a Triangle</h1>
   <p class="welcome">Input the base and height to calculate the area.</p>
-  <form method="post">
+  <form method="post" class="tool-form">
     <div><label for="base">Base</label><input id="base" name="base" type="number" step="any" min="0" placeholder="e.g. 10" required></div>
     <div><label for="height">Height</label><input id="height" name="height" type="number" step="any" min="0" placeholder="e.g. 6" required></div>
     <button type="submit">Calculate</button>

@@ -1,19 +1,45 @@
 {% extends "base.html" %}
+{% from "_socials.html" import social_icons %}
 {% block title %}Home{% endblock %}
+{% block bodyclass %}page-home{% endblock %}
 {% block content %}
-<section class="section hero">
-  <p class="hello">Hello, I'm</p>
-  <h1>Sarah Grace J. Gruy</h1>
-  <p class="role">COMPUTER ENGINEERING STUDENT</p>
-  <p class="tagline">POLYTECHNIC UNIVERSITY OF THE PHILIPPINES</p>
-  <p class="lead">
-    Welcome to my little corner of the internet! This website is a personal project where I collect
-    the programs I build while learning, from small calculators to data structures. Take a look
-    around, try the tools, and feel free to say hello.
-  </p>
-  <div class="actions">
-    <a class="btn" href="{{ url_for('works') }}">See my works</a>
-    <a class="btn btn-outline" href="{{ url_for('contact') }}">Get in touch</a>
+<div class="stage">
+  <svg class="deco d-a" style="--petal:#f1c9bd"><use href="#flower"/></svg>
+  <svg class="deco d-b" style="--petal:#fff4ea;--heart:#e9b8a6"><use href="#flower"/></svg>
+  <svg class="deco d-c" style="--leaf:#9db08f"><use href="#sprig"/></svg>
+  <svg class="deco d-d" style="--petal:#fff4ea;--heart:#f3d98c"><use href="#flower"/></svg>
+  <svg class="deco d-e" style="--petal:#e9c3b6"><use href="#flower"/></svg>
+  <svg class="deco d-f" style="--leaf:#9db08f"><use href="#sprig"/></svg>
+<section class="home-hero">
+  <div class="home-text">
+    <p class="script">Hello, I'm Sarah</p>
+    <h1>Computer Engineering <em>Student</em></h1>
+    <p class="uni">Polytechnic University of the Philippines</p>
+    <p class="lead">
+      Welcome to my little corner of the internet! This is a personal website project where I
+      collect the programs I build while learning, from small calculators to data structures.
+      Explore around, try the tools, and feel free to say hello.
+    </p>
+    <div class="actions">
+      <a class="btn" href="{{ url_for('works') }}">See my works</a>
+      <a class="btn btn-outline" href="{{ url_for('contact') }}">Get in touch</a>
+    </div>
+    {{ social_icons(socials, 'hero-icons') }}
+  </div>
+
+  <div class="home-photo">
+    <div class="arch">
+      <img src="{{ url_for('static', filename='images/profilepic.jpeg') }}" alt="Sarah smiling">
+    </div>
+    <svg class="badge" viewBox="0 0 120 120" aria-hidden="true">
+      <defs><path id="circ" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+      <circle cx="60" cy="60" r="57" class="badge-bg"/>
+      <text class="badge-text"><textPath href="#circ">COMPUTER ENGINEER ✦ ALWAYS LEARNING ✦ </textPath></text>
+      <path class="badge-star" d="M60 44 L63.5 56.5 L76 60 L63.5 63.5 L60 76 L56.5 63.5 L44 60 L56.5 56.5Z"/>
+    </svg>
+    <span class="sparkle s1">✦</span><span class="sparkle s2">✦</span><span class="sparkle s3">✧</span>
   </div>
 </section>
+</div>
+
 {% endblock %}

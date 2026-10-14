@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Convert String to Uppercase{% endblock %}
+{% block bodyclass %}page-tool{% endblock %}
 {% block content %}
-<section class="section">
+<section class="tool-card">
   <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
   <h1>Convert String to Uppercase</h1>
   <p class="welcome">Type anything below and it will turn into capital letters.</p>
-  <form method="post">
+  <form method="post" class="tool-form">
     <div><label for="inputString">Enter a string</label><input id="inputString" name="inputString" type="text" placeholder="Type here..." required></div>
     <button type="submit">Convert</button>
   </form>
