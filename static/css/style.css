@@ -96,7 +96,7 @@ img{max-width:100%}
   border:6px solid var(--paper);box-shadow:var(--shadow);background:var(--sage-light);
 }
 .arch img{width:100%;height:100%;object-fit:cover;display:block}
-.badge{position:absolute;width:118px;height:118px;left:-46px;top:34px;animation:spin 22s linear infinite}
+.badge{position:absolute;width:118px;height:118px;left:-46px;top:34px}
 .badge-bg{fill:var(--terracotta)}
 .badge-text{fill:#fff4ea;font:700 8px var(--sans);letter-spacing:1.6px}
 .badge-star{fill:#fff4ea}
