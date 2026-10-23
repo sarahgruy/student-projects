@@ -20,25 +20,25 @@
       <div class="thumb"><img src="{{ url_for('static', filename='images/upper.png') }}" alt="Lowercase letters turning into capitals"></div>
       <div class="body"><h3>toUpperCase</h3><p>Turns any text you type into capital letters.</p><span class="open">Open &rarr;</span></div>
     </a>
-    <a class="work-card tint-sage" href="{{ url_for('acircle') }}">
+    <a class="work-card tint-sage" href="{{ url_for('area.area_page') }}">
       <span class="tape" aria-hidden="true"></span>
-      <div class="thumb"><img src="{{ url_for('static', filename='images/circle.png') }}" alt="A circle with its radius marked"></div>
-      <div class="body"><h3>Area of a Circle</h3><p>Enter a radius and get the area.</p><span class="open">Open &rarr;</span></div>
+      <div class="thumb"><img src="{{ url_for('static', filename='images/area.png') }}" alt="Area of shapes"></div>
+      <div class="body"><h3>Area Calculator</h3><p>Enter dimensions and get the area.</p><span class="open">Open &rarr;</span></div>
     </a>
-    <a class="work-card tint-butter" href="{{ url_for('atriangle') }}">
-      <span class="tape" aria-hidden="true"></span>
-      <div class="thumb"><img src="{{ url_for('static', filename='images/triangle.png') }}" alt="A triangle with base and height marked"></div>
-      <div class="body"><h3>Area of a Triangle</h3><p>Enter a base and height to find the area.</p><span class="open">Open &rarr;</span></div>
-    </a>
-    <a class="work-card tint-lilac" href="{{ url_for('linked.linked_list') }}">
+    <a class="work-card tint-butter" href="{{ url_for('linked.linked_list') }}">
       <span class="tape" aria-hidden="true"></span>
       <div class="thumb"><img src="{{ url_for('static', filename='images/node.png') }}" alt="Three connected linked list nodes"></div>
       <div class="body"><h3>Linked List</h3><p><p>Insert, search and delete values in a list.</p></p><span class="open">Open &rarr;</span></div>
     </a>
-        <a class="work-card tint-peach" href="{{ url_for('stack.stack_page') }}">
+        <a class="work-card tint-lilac" href="{{ url_for('stack.stack_page') }}">
       <span class="tape" aria-hidden="true"></span>
       <div class="thumb"><img src="{{ url_for('static', filename='images/stack.png') }}" alt="A stack of blocks with push and pop arrows"></div>
       <div class="body"><h3>Stack</h3><p><p>Push, pop, peek and convert infix to postfix.</p></p><span class="open">Open &rarr;</span></div>
+    </a>
+    <a class="work-card tint-peach" href="{{ url_for('queue_dq.queue_dq_page') }}">
+      <span class="tape" aria-hidden="true"></span>
+      <div class="thumb"><img src="{{ url_for('static', filename='images/queue.png') }}" alt="Queue and Dequeue of blocks"></div>
+      <div class="body"><h3>Queue and Dequeue</h3><p>Insert and remove items from a queue.</p><span class="open">Open &rarr;</span></div>
     </a>
   </div>
 </section>

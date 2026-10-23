@@ -5,11 +5,15 @@ from flask import (Flask, render_template, request, redirect, url_for, flash)
 from routes.socials import SOCIALS, CONTACT_EMAIL, send_to_gmail
 from routes.Lab_3 import linked_bp
 from routes.stack import stack_bp
+from routes.area import area_bp
+from routes.queue_dq import queue_bp
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 app.register_blueprint(linked_bp)
 app.register_blueprint(stack_bp)
+app.register_blueprint(area_bp)
+app.register_blueprint(queue_bp)
 
 @app.context_processor
 def inject_globals():
@@ -69,25 +73,6 @@ def touppercase():
         input_string = request.form.get('inputString', '')
         result = input_string.upper()
     return render_template('touppercase.html', result=result)
-
-
-@app.route('/works/area/circle', methods=['GET', 'POST'])
-def acircle():
-    result = None
-    if request.method == 'POST':
-        radius = float(request.form.get('radius', 0) or 0)
-        result = 3.14 * radius * radius
-    return render_template('circle.html', result=result)
-
-
-@app.route('/works/area/triangle', methods=['GET', 'POST'])
-def atriangle():
-    result = None
-    if request.method == 'POST':
-        base = float(request.form.get('base', 0) or 0)
-        height = float(request.form.get('height', 0) or 0)
-        result = 0.5 * base * height
-    return render_template('triangle.html', result=result)
 
 
 if __name__ == '__main__':

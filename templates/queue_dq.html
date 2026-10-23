@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Queue{% endblock %}
+{% block bodyclass %}page-tool page-stack{% endblock %}
+{% block content %}
+<section class="tool-card ll st">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Queue and Dequeue</h1>
+  <p class="welcome">A queue is first in, first out: the first value you add is the first one you remove.</p>
+
+    {# messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for kind, msg in messages %}<div class="result {{ kind }}" role="status">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+
+    {# queue #}
+    <div class="grid">
+        <section class="panel">
+            <h2>The Queue</h2>
+            <div class="stats">
+                <span>Size <b>{{ items|length }}</b></span>
+                <span>Front <b>{{ items[0] if items else 'null' }}</b></span>
+                <span>Rear <b>{{ items[-1] if items else 'null' }}</b></span>
+            </div>
+            <div class="stack-wrap">
+                {% if items %}
+                    <ol class="vstack" aria-label="Queue, front first">
+                        {% for item in items %}
+                            <li class="slot {% if hk == 'new' and loop.last %}new{% elif hk == 'peek' and loop.first %}peek{% endif %}">
+                                <span class="slot-val">{{ item }}</span>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p class="empty">The queue is empty. Add a value, or load the sample.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <div>
+            <section class="panel">
+                <h2>Operations</h2>
+                <form method="post" action="{{ url_for('queue_dq.queue_dq_page') }}">
+                    <button class="sr" type="submit" name="action" value="enqueue" tabindex="-1" aria-hidden="true">Enqueue</button>
+                    <div class="fields one">
+                        <div><label for="value">Value</label>
+                            <input type="text" id="value" name="value" autocomplete="off" autofocus placeholder="e.g. 25"></div>
+                    </div>
+                    <div class="group"><h3>Add &amp; Remove</h3>
+                        <div class="btns">
+                            <button class="b add" type="submit" name="action" value="enqueue">Enqueue</button>
+                            <button class="b del" type="submit" name="action" value="dequeue">Dequeue</button>
+                            <button class="b" type="submit" name="action" value="peek">Peek</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Queue</h3>
+                        <div class="btns">
+                            <button class="b" type="submit" name="action" value="sample">Load sample</button>
+                            <button class="b" type="submit" name="action" value="clear">Clear queue</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

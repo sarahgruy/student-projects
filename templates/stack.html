@@ -7,12 +7,12 @@
   <h1>Stack</h1>
   <p class="welcome">A stack is last in, first out: the last value you push is the first one you pop.</p>
 
-  {# ---------- messages ---------- #}
+  {# messages #}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% for kind, msg in messages %}<div class="result {{ kind }}" role="status">{{ msg }}</div>{% endfor %}
   {% endwith %}
 
-  {# ---------- stack ---------- #}
+  {# stack #}
   <div class="grid">
     <section class="panel">
       <h2>The Stack</h2>
@@ -64,7 +64,7 @@
     </div>
   </div>
 
-    {# ---------- infix to postfix ---------- #}
+    {# infix to postfix #}
   <section class="panel gap" id="infix">
     <h2>Infix to Postfix</h2>
     <p class="note">Type a normal (infix) expression and see it as postfix, where each operator comes after its operands. You can use numbers, letters, <code>+ - * / % ^</code> and parentheses.</p>
@@ -82,5 +82,5 @@
     <div class="answer gap"><small>Postfix</small>{{ postfix }}</div>
     {% endif %}
   </section>
-</section>
+</section> <!---Automatic result realtime-->
 {% endblock %}

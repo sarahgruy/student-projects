@@ -34,7 +34,7 @@ def check_expression(tokens):
                 if depth < 0:
                     raise ValueError('A ")" has no matching "(".')
             elif t == '(':
-                raise ValueError('Put an operator (like +) before "(".')
+                raise ValueError('Put an operator before the "(".')
             else:
                 raise ValueError(f'Put an operator between "{t}" and the item before it.')
     if expect_operand:

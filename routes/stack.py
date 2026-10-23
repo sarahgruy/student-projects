@@ -42,7 +42,7 @@ def to_list(stack):
 # webpage 
 
 stack_bp = Blueprint('stack', __name__)
-MAX_ITEMS = 12
+MAX_ITEMS = 12 
 
 
 def load_stack():
@@ -78,7 +78,7 @@ def handle_basics():
         if raw == '':
             return back('error', 'Enter a value first.')
         if len(raw) > 20:
-            return back('error', 'Please keep the value to 20 characters or fewer.')
+            return back('error', 'Please keep the value below 20 characters.')
         if len(to_list(stack)) >= MAX_ITEMS:
             return back('error', f'The demo stack holds up to {MAX_ITEMS} values. Pop one first.')
         value = parse_value(raw)
@@ -122,12 +122,10 @@ def stack_page():
     if hk not in ('new', 'peek'):
         hk = None
 
-    ctx = {
-        'hk': hk,
+    ctx = {'hk': hk,
         'items': to_list(load_stack()),
         'expr': request.args.get('expr', ''),
-        'error': None,
-    }
+        'error': None,}
 
     expr = request.args.get('expr')
     if expr is not None:

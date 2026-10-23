@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Area Calculator{% endblock %}
+{% block bodyclass %}page-tool{% endblock %}
+{% block content %}
+<div class="area-page">
+
+    <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+    
+    <div class="area-header">
+        <h1 class="area-title">Area Calculator</h1>
+        <p class="area-note">Type dimensions and it will calculate the area.</p>
+    </div>
+
+    <div class="area-grid">
+        {% for key, (title, fields) in shapes.items() %}
+        <form method="post" class="area-card">
+            <h2>{{ title }}</h2>
+            <input type="hidden" name="shape" value="{{ key }}">
+
+            {% for name, label in fields %}
+            <label for="{{ key }}-{{ name }}">{{ label }}</label>
+            <input type="number" step="any" min="0"
+                   id="{{ key }}-{{ name }}" name="{{ name }}"
+                   placeholder="e.g. 5"
+                   value="{{ values.get(name, '') if shape == key else '' }}" required>
+            {% endfor %}
+
+            <button type="submit">Calculate</button>
+
+            {% if shape == key %}
+                {% if error %}
+                    <p class="area-error">{{ error }}</p>
+                {% elif result is not none %}
+                    <p class="area-result">Area = <strong>{{ result }}</strong></p>
+                {% endif %}
+            {% endif %}
+        </form>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
