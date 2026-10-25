@@ -10,7 +10,6 @@
   <svg class="deco w-e" style="--leaf:#a9b98a"><use href="#sprig"/></svg>
   <svg class="deco w-f" style="--petal:#f3c9bd"><use href="#flower"/></svg>
 <section class="works-wrap">
-  <p class="script">little things i've made</p>
   <h1>Welcome to my programming works</h1>
   <p class="welcome">Pick a project to open it and give it a try.</p>
 
@@ -28,18 +27,25 @@
     <a class="work-card tint-butter" href="{{ url_for('linked.linked_list') }}">
       <span class="tape" aria-hidden="true"></span>
       <div class="thumb"><img src="{{ url_for('static', filename='images/node.png') }}" alt="Three connected linked list nodes"></div>
-      <div class="body"><h3>Linked List</h3><p><p>Insert, search and delete values in a list.</p></p><span class="open">Open &rarr;</span></div>
+      <div class="body"><h3>Linked List</h3><p>Insert, search and delete values in a list.</p><span class="open">Open &rarr;</span></div>
     </a>
         <a class="work-card tint-lilac" href="{{ url_for('stack.stack_page') }}">
       <span class="tape" aria-hidden="true"></span>
       <div class="thumb"><img src="{{ url_for('static', filename='images/stack.png') }}" alt="A stack of blocks with push and pop arrows"></div>
-      <div class="body"><h3>Stack</h3><p><p>Push, pop, peek and convert infix to postfix.</p></p><span class="open">Open &rarr;</span></div>
+      <div class="body"><h3>Stack</h3><p>Push, pop, peek and convert infix to postfix.</p><span class="open">Open &rarr;</span></div>
     </a>
     <a class="work-card tint-peach" href="{{ url_for('queue_dq.queue_dq_page') }}">
       <span class="tape" aria-hidden="true"></span>
       <div class="thumb"><img src="{{ url_for('static', filename='images/queue.png') }}" alt="Queue and Dequeue of blocks"></div>
       <div class="body"><h3>Queue and Dequeue</h3><p>Insert and remove items from a queue.</p><span class="open">Open &rarr;</span></div>
     </a>
+    <a class="work-card tint-sage" href="{{ url_for('sorting_visualizer') }}">
+      <span class="tape" aria-hidden="true"></span>
+      <div class="thumb"><img src="{{ url_for('static', filename='images/sorting.png') }}" alt="Sorting algorithms presentation"></div>
+      <div class="body"><h3>Sorting Visualizer</h3><p>Explore step-by-step interactive animations for fundamental sorting algorithms.</p><span class="open">Open &rarr;</span>
+      </div>
+    </a>
+
   </div>
 </section>
 </div>

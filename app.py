@@ -75,5 +75,10 @@ def touppercase():
     return render_template('touppercase.html', result=result)
 
 
+@app.route('/works/sorting')
+def sorting_visualizer():
+    return render_template('sorting.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

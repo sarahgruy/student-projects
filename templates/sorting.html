@@ -1,0 +1,353 @@
+{% extends 'base.html' %} 
+{% block title %}Sorting Visualizer{% endblock %} 
+{% block bodyclass %}page-tool page-sort{% endblock %} 
+
+{% block content %}
+<section class="tool-card ll st">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1 id="algo-title">Bubble Sort</h1>
+  <p class="welcome" id="algo-desc">Watch how bubble sort repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.</p>
+
+  <!-- Horizontal Algorithm Navigation (centered) -->
+  <div id="algo-nav" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 20px 0 25px;">
+    <button class="b add" id="nav-bubble" onclick="switchAlgorithm('bubble')" style="width: auto;">Bubble Sort</button>
+    <button class="b btn-outline" id="nav-selection" onclick="switchAlgorithm('selection')" style="width: auto;">Selection Sort</button>
+    <button class="b btn-outline" id="nav-insertion" onclick="switchAlgorithm('insertion')" style="width: auto;">Insertion Sort</button>
+    <button class="b btn-outline" id="nav-merge" onclick="switchAlgorithm('merge')" style="width: auto;">Merge Sort</button>
+    <button class="b btn-outline" id="nav-quick" onclick="switchAlgorithm('quick')" style="width: auto;">Quicksort</button>
+  </div>
+
+  <div class="grid" style="display: grid; grid-template-columns: 3fr 1.5fr; gap: 20px; align-items: start;">
+
+    <!-- Visualizer Canvas Area -->
+    <section class="panel">
+      <h2>Visualization</h2>
+      <div id="visualizer-container" style="display: flex; align-items: flex-end; justify-content: center; height: 375px; background: #f0f0f0; border-radius: 8px; padding: 20px; gap: 12px;">
+        <!-- Columns are injected dynamically here -->
+      </div>
+    </section>
+
+    <!-- Controls & Status -->
+    <div>
+      <section class="panel" style="text-align: center;">
+        <h2 style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #4a3f3c; margin-bottom: 18px;">Controls</h2>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+          <button id="generate-btn" onclick="generateRandomArray()"
+            style="background: #b97560; color: #fff; border: 2px solid #b97560; border-radius: 999px; padding: 12px 28px; font-family: 'Quicksand', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 14px rgba(185,117,96,0.35);">
+            Generate Random Array
+          </button>
+          <button id="sort-btn" onclick="startSortingRun()"
+            style="background: #fff; color: #b97560; border: 1.5px solid #b97560; border-radius: 999px; padding: 11px 28px; font-family: 'Quicksand', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer;">
+            Start Bubble Sort
+          </button>
+        </div>
+
+        <div class="group" style="margin-top: 25px; text-align: left;">
+          <h3>Execution Status</h3>
+          <div id="status-box" style="background: #fdf0ed; color: #5a4b48; border: 1px solid #f3d4cc; padding: 15px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 14px; min-height: 120px; line-height: 1.5;">
+            Select an algorithm and click "Start".
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<script>
+  let array = [];
+  let currentAlgo = 'bubble';
+  let isRunning = false;
+  const container = document.getElementById("visualizer-container");
+  const statusBox = document.getElementById("status-box");
+  const sortBtn = document.getElementById("sort-btn");
+  const generateBtn = document.getElementById("generate-btn");
+
+  // Bar colors
+  const COLOR_DEFAULT = "#29b6f6";  // blue (idle)
+  const COLOR_ACTIVE  = "#e06666";  // red (being compared / moved)
+  const COLOR_SORTED  = "#9bc2d1";  // grey-blue (finished)
+  const COLOR_MARK    = "#f4a259";  // amber (pivot / key / current minimum)
+
+  // Increase this number to make every animation slower, decrease to speed up
+  const SPEED = 2;
+
+  const algoMetadata = {
+    bubble: { title: "Bubble Sort", desc: "Compares adjacent elements and swaps them if they are in the wrong order. Large values 'bubble' to the top." },
+    selection: { title: "Selection Sort", desc: "Repeatedly finds the minimum element from the unsorted portion and puts it at the beginning." },
+    insertion: { title: "Insertion Sort", desc: "Builds the final sorted array one item at a time by inserting elements into their correct position." },
+    merge: { title: "Merge Sort", desc: "A divide-and-conquer algorithm that divides the array in half, sorts them, and merges them back together." },
+    quick: { title: "Quicksort", desc: "Picks an element as a pivot and partitions the array around it, sorting sub-arrays recursively." }
+  };
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms * SPEED));
+
+  function updateSortBtnLabel() {
+    sortBtn.innerText = `Start ${algoMetadata[currentAlgo].title}`;
+  }
+
+  function switchAlgorithm(algoKey) {
+    if (isRunning) return;
+    currentAlgo = algoKey;
+
+    Object.keys(algoMetadata).forEach(k => {
+      const btn = document.getElementById(`nav-${k}`);
+      btn.className = (k === algoKey) ? "b add" : "b btn-outline";
+    });
+
+    document.getElementById("algo-title").innerText = algoMetadata[algoKey].title;
+    document.getElementById("algo-desc").innerText = algoMetadata[algoKey].desc;
+    updateSortBtnLabel();
+    generateRandomArray();
+    statusBox.innerHTML = `Switched to ${algoMetadata[algoKey].title}. Ready to visualize.`;
+  }
+
+  function generateRandomArray() {
+    if (isRunning) return;
+    array = [];
+    container.innerHTML = "";
+
+    for (let i = 0; i < 5; i++) {
+      const value = Math.floor(Math.random() * 41) + 10; // 10 to 50
+      array.push(value);
+
+      const barWrap = document.createElement("div");
+      barWrap.style.display = "flex";
+      barWrap.style.flexDirection = "column";
+      barWrap.style.alignItems = "center";
+      barWrap.style.width = "55px";
+      barWrap.id = `bar-wrap-${i}`;
+
+      const valueTag = document.createElement("div");
+      valueTag.innerText = value;
+      valueTag.style.marginBottom = "6px";
+      valueTag.style.fontWeight = "700";
+      valueTag.style.fontSize = "15px";
+      valueTag.style.color = "#333";
+      valueTag.id = `val-${i}`;
+
+      const bar = document.createElement("div");
+      bar.style.height = `${value * 5.5}px`;
+      bar.style.width = "100%";
+      bar.style.background = COLOR_DEFAULT;
+      bar.style.borderRadius = "5px 5px 0 0";
+      bar.style.transition = "all 0.3s ease";
+      bar.id = `bar-${i}`;
+
+      const idxLabel = document.createElement("div");
+      idxLabel.innerText = i;
+      idxLabel.style.color = "#999";
+      idxLabel.style.marginTop = "6px";
+      idxLabel.style.fontSize = "12px";
+
+      barWrap.appendChild(valueTag);
+      barWrap.appendChild(bar);
+      barWrap.appendChild(idxLabel);
+      container.appendChild(barWrap);
+    }
+    statusBox.innerHTML = `Generated new array. Ready to run ${algoMetadata[currentAlgo].title}.`;
+    sortBtn.disabled = false;
+  }
+
+  function setBarColor(index, color) {
+    const el = document.getElementById(`bar-${index}`);
+    if (el) el.style.background = color;
+  }
+
+  function updateVisualDisplay(index, val) {
+    const bar = document.getElementById(`bar-${index}`);
+    const tag = document.getElementById(`val-${index}`);
+    if (bar && tag) {
+      bar.style.height = `${val * 5.5}px`;
+      tag.innerText = val;
+    }
+  }
+
+  async function startSortingRun() {
+    if (isRunning) return;
+    isRunning = true;
+    sortBtn.disabled = true;
+    generateBtn.disabled = true;
+    sortBtn.style.opacity = generateBtn.style.opacity = "0.6";
+
+    // reset colors in case of a previous run
+    for (let i = 0; i < array.length; i++) setBarColor(i, COLOR_DEFAULT);
+
+    if (currentAlgo === 'bubble') await runBubbleSort();
+    else if (currentAlgo === 'selection') await runSelectionSort();
+    else if (currentAlgo === 'insertion') await runInsertionSort();
+    else if (currentAlgo === 'merge') await runMergeSort();
+    else if (currentAlgo === 'quick') await runQuickSortRun();
+
+    // Everything finished: mark all bars as sorted
+    for (let i = 0; i < array.length; i++) setBarColor(i, COLOR_SORTED);
+    isRunning = false;
+    generateBtn.disabled = false;
+    sortBtn.style.opacity = generateBtn.style.opacity = "1";
+  }
+
+  /* --- ALGORITHMS --- */
+
+  async function runBubbleSort() {
+    let n = array.length;
+    for (let i = 0; i < n - 1; i++) {
+      for (let j = 0; j < n - i - 1; j++) {
+        setBarColor(j, COLOR_ACTIVE);
+        setBarColor(j + 1, COLOR_ACTIVE);
+        statusBox.innerHTML = `<strong>Comparing pairs:</strong> Is array[${j}] (${array[j]}) > array[${j+1}] (${array[j+1]})?`;
+        await sleep(800);
+
+        if (array[j] > array[j + 1]) {
+          statusBox.innerHTML = `<strong>Condition met:</strong> Swap ${array[j]} and ${array[j+1]}.`;
+          let temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
+
+          updateVisualDisplay(j, array[j]);
+          updateVisualDisplay(j + 1, array[j + 1]);
+          await sleep(600);
+        }
+        setBarColor(j, COLOR_DEFAULT);
+        setBarColor(j + 1, COLOR_DEFAULT);
+      }
+      // the last element of this pass is now in its final place
+      setBarColor(n - i - 1, COLOR_SORTED);
+    }
+    statusBox.innerHTML = "<strong>Complete!</strong> Bubble sort finished.";
+  }
+
+  async function runSelectionSort() {
+    let n = array.length;
+    for (let i = 0; i < n; i++) {
+      let minIdx = i;
+      setBarColor(minIdx, COLOR_MARK);
+      for (let j = i + 1; j < n; j++) {
+        setBarColor(j, COLOR_ACTIVE);
+        statusBox.innerHTML = `<strong>Scanning:</strong> Checking if index ${j} is smaller than current min at ${minIdx}.`;
+        await sleep(600);
+        if (array[j] < array[minIdx]) {
+          setBarColor(minIdx, COLOR_DEFAULT);
+          minIdx = j;
+          setBarColor(minIdx, COLOR_MARK);
+        } else {
+          setBarColor(j, COLOR_DEFAULT);
+        }
+      }
+      if (minIdx !== i) {
+        statusBox.innerHTML = `<strong>Swapping:</strong> Found minimum. Swap index ${i} with ${minIdx}.`;
+        let temp = array[i];
+        array[i] = array[minIdx];
+        array[minIdx] = temp;
+        updateVisualDisplay(i, array[i]);
+        updateVisualDisplay(minIdx, array[minIdx]);
+        await sleep(800);
+      }
+      setBarColor(minIdx, COLOR_DEFAULT);
+      setBarColor(i, COLOR_SORTED);
+    }
+    statusBox.innerHTML = "<strong>Complete!</strong> Selection sort finished.";
+  }
+
+  async function runInsertionSort() {
+    let n = array.length;
+    for (let i = 1; i < n; i++) {
+      let key = array[i];
+      let j = i - 1;
+      setBarColor(i, COLOR_MARK);
+      statusBox.innerHTML = `<strong>Holding Key:</strong> Inserting value ${key} into the sorted portion.`;
+      await sleep(800);
+
+      while (j >= 0 && array[j] > key) {
+        setBarColor(j, COLOR_ACTIVE);
+        array[j + 1] = array[j];
+        updateVisualDisplay(j + 1, array[j + 1]);
+        statusBox.innerHTML = `<strong>Shifting:</strong> Shifting ${array[j]} to the right.`;
+        await sleep(600);
+        setBarColor(j, COLOR_DEFAULT);
+        j = j - 1;
+      }
+      array[j + 1] = key;
+      updateVisualDisplay(j + 1, key);
+      setBarColor(i, COLOR_DEFAULT);
+    }
+    statusBox.innerHTML = "<strong>Complete!</strong> Insertion sort finished.";
+  }
+
+  async function runMergeSort() {
+    statusBox.innerHTML = "<strong>Divide & Conquer:</strong> Splitting the array and merging sorted halves.";
+    await mergeSortSplit(0, array.length - 1);
+    statusBox.innerHTML = "<strong>Complete!</strong> Merge sort finished.";
+  }
+
+  async function mergeSortSplit(l, r) {
+    if (l >= r) return;
+    let m = Math.floor((l + r) / 2);
+    await mergeSortSplit(l, m);
+    await mergeSortSplit(m + 1, r);
+    await mergeCombine(l, m, r);
+  }
+
+  async function mergeCombine(l, m, r) {
+    let res = [];
+    let i = l, j = m + 1;
+    while (i <= m && j <= r) {
+      setBarColor(i, COLOR_ACTIVE);
+      setBarColor(j, COLOR_ACTIVE);
+      await sleep(400);
+      if (array[i] <= array[j]) { res.push(array[i]); setBarColor(i, COLOR_DEFAULT); i++; }
+      else { res.push(array[j]); setBarColor(j, COLOR_DEFAULT); j++; }
+      setBarColor(i, COLOR_DEFAULT);
+      setBarColor(j, COLOR_DEFAULT);
+    }
+    while (i <= m) res.push(array[i++]);
+    while (j <= r) res.push(array[j++]);
+    for (let k = 0; k < res.length; k++) {
+      array[l + k] = res[k];
+      updateVisualDisplay(l + k, array[l + k]);
+      setBarColor(l + k, COLOR_MARK);
+      await sleep(300);
+      setBarColor(l + k, COLOR_DEFAULT);
+    }
+  }
+
+  async function runQuickSortRun() {
+    statusBox.innerHTML = "<strong>Partitioning:</strong> Choosing pivots to split the array into regions.";
+    await quickSplitting(0, array.length - 1);
+    statusBox.innerHTML = "<strong>Complete!</strong> Quicksort finished.";
+  }
+
+  async function quickSplitting(low, high) {
+    if (low >= high) return;
+    let pIdx = await quickPartition(low, high);
+    await quickSplitting(low, pIdx - 1);
+    await quickSplitting(pIdx + 1, high);
+  }
+
+  async function quickPartition(low, high) {
+    let pivot = array[high];
+    setBarColor(high, COLOR_MARK);
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+      setBarColor(j, COLOR_ACTIVE);
+      if (array[j] < pivot) {
+        i++;
+        let t = array[i]; array[i] = array[j]; array[j] = t;
+        updateVisualDisplay(i, array[i]);
+        updateVisualDisplay(j, array[j]);
+      }
+      await sleep(500);
+      setBarColor(j, COLOR_DEFAULT);
+    }
+    let t = array[i + 1];
+    array[i + 1] = array[high];
+    array[high] = t;
+    updateVisualDisplay(i + 1, array[i + 1]);
+    updateVisualDisplay(high, array[high]);
+    setBarColor(high, COLOR_DEFAULT);
+    return i + 1;
+  }
+
+  // Initialize canvas
+  updateSortBtnLabel();
+  generateRandomArray();
+</script>
+{% endblock %}

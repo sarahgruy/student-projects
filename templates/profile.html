@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_socials.html" import social_icons %}
 {% block title %}Profile{% endblock %}
 {% block bodyclass %}page-profile{% endblock %}
 {% block content %}
@@ -9,61 +10,169 @@
   <svg class="deco p-d" style="--petal:#e9c3b6"><use href="#flower"/></svg>
   <svg class="deco p-e" style="--leaf:#9db08f"><use href="#sprig"/></svg>
 
-  <section class="profile">
-    <header class="about-head">
-      <img class="avatar" src="{{ url_for('static', filename='images/profile_pic.jpeg') }}" alt="Profile picture of Sarah">
-      <div>
-        <p class="script">about me</p>
+  <section class="pf">
+    <header class="pf-head">
+      <div class="pf-avatar">
+        <img src="{{ url_for('static', filename='images/profile_pic.jpeg') }}" alt="Profile picture of Sarah">
+        <span class="pf-star" aria-hidden="true">&#10022;</span>
+      </div>
+      <div class="pf-id">
+        <p class="pf-kicker"><span class="script">about me</span><span class="pf-kstar" aria-hidden="true">&#10022;</span></p>
         <h1>Sarah Grace Gruy</h1>
-        <p class="about-sub">Computer Engineering student, BSCpE 2-1</p>
-        <p class="about-sub">Polytechnic University of the Philippines</p>
+        <p class="pf-sub">Computer Engineering student, BSCpE 2&#8209;1</p>
+        <p class="pf-sub">Polytechnic University of the Philippines</p>
         <p class="tagline">Faithful learner, Persistent dreamer.</p>
       </div>
     </header>
-  </section>
 
-  <section class="about-band" aria-label="More about me">
-    <div class="band-inner">
-      <h2 class="band-title">a little more about me</h2>
+    <div class="pf-tabs" aria-label="More about me">
+      <button type="button" class="pf-tab" aria-expanded="false" aria-controls="pf-about">
+        <span class="pf-orb o-about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.7 3.5-5.7 7.2-5.7s6.6 2 7.2 5.7"/></svg></span>
+        <span class="pf-label">About Me</span>
+      </button>
+      <button type="button" class="pf-tab" aria-expanded="false" aria-controls="pf-skills">
+        <span class="pf-orb o-skills"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></span>
+        <span class="pf-label">Skills</span>
+      </button>
+      <button type="button" class="pf-tab" aria-expanded="false" aria-controls="pf-interests">
+        <span class="pf-orb o-interests"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.200z"/></svg></span>
+        <span class="pf-label">Interests</span>
+      </button>
+      <button type="button" class="pf-tab" aria-expanded="false" aria-controls="pf-contact">
+        <span class="pf-orb o-contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3L10.5 13.500M21 3l-6.5 18-4-7.500L3 9.500z"/></svg></span>
+        <span class="pf-label">Contact</span>
+      </button>
+    </div>
 
-      <div class="trio">
-        <article class="bcol">
-          <span class="orb orb-lilac" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 5l-4 14"/></svg></span>
-          <h3>I build</h3>
-          <p>small <a href="{{ url_for('works') }}">programs</a>, from calculators to data structures.</p>
-        </article>
-        <article class="bcol">
-          <span class="orb orb-rose" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></span>
-          <h3>I wonder</h3>
-          <p>I love the hows and whys behind the technologies and systems that shape our world, and I explore anything new that makes me curious!</p>
-        </article>
-        <article class="bcol">
-          <span class="orb orb-gold" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5.5C5.5 4.3 8.5 4.5 12 6.5c3.5-2 6.5-2.2 9-1V18c-2.5-1.2-5.5-1-9 1-3.5-2-6.5-2.2-9-1z"/><path d="M12 6.5V19"/></svg></span>
-          <h3>I enjoy</h3>
-          <p>reading a lot, making crafts, and listening to music.</p>
-        </article>
-      </div>
+    <div class="pf-panels">
+      <article class="pf-panel" id="pf-about" aria-label="About Me">
+        <header class="pf-phead">
+          <span class="pf-mini o-about"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.6-3.7 3.5-5.7 7.2-5.7s6.6 2 7.2 5.7"/></svg></span>
+          <h2>About Me</h2>
+          <button type="button" class="pf-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </header>
+        <div class="pf-body">
+          <div class="pf-text">
+            <p><strong>I build</strong> small <a href="{{ url_for('works') }}">programs</a>, from calculators to data structures.</p>
+            <p><strong>I wonder</strong> I love the hows and whys behind the technologies and systems that shape our world, and I explore anything new that makes me curious!</p>
+            <p><strong>I enjoy</strong> reading a lot, making crafts, and listening to music.</p>
+          </div>
+        </div>
+      </article>
 
-      <div class="duo">
-        <div class="bcol">
-          <h3>Skills</h3>
+      <article class="pf-panel" id="pf-skills" aria-label="Skills">
+        <header class="pf-phead">
+          <span class="pf-mini o-skills"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></span>
+          <h2>Skills</h2>
+          <button type="button" class="pf-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </header>
+        <div class="pf-body">
           <div class="chips">
             <span class="chip">Python</span><span class="chip">SQL</span>
             <span class="chip">HTML</span><span class="chip">Data Structures</span>
           </div>
         </div>
-        <div class="bcol">
-          <h3>Interests</h3>
+      </article>
+
+      <article class="pf-panel" id="pf-interests" aria-label="Interests">
+        <header class="pf-phead">
+          <span class="pf-mini o-interests"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.200z"/></svg></span>
+          <h2>Interests</h2>
+          <button type="button" class="pf-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </header>
+        <div class="pf-body">
           <div class="chips">
             <span class="chip">Crafts</span><span class="chip">Programming</span>
             <span class="chip">Reading</span><span class="chip">Music</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <p class="band-motto">&ldquo;To be is to do. Do be do be do&rdquo;</p>
-      <p class="band-foot">want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
+      <article class="pf-panel" id="pf-contact" aria-label="Contact">
+        <header class="pf-phead">
+          <span class="pf-mini o-contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3L10.5 13.500M21 3l-6.5 18-4-7.500L3 9.500z"/></svg></span>
+          <h2>Contact</h2>
+          <button type="button" class="pf-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </header>
+        <div class="pf-body pf-center">
+          <div class="pf-text">
+            <p>want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
+            {% if socials %}{{ social_icons(socials, 'pf-icons') }}{% endif %}
+            <a class="pf-btn" href="{{ url_for('contact') }}">Go to contact <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+      </article>
     </div>
+
+    <div class="pf-divider" aria-hidden="true"><span></span><i>&#10022;</i><span></span></div>
+    <p class="band-motto">&ldquo;To be is to do. Do be do be do&rdquo;</p>
+    <p class="band-foot">want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
   </section>
 </div>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.pf-tab'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.pf-panel'));
+  var wrap = document.querySelector('.pf-panels');
+  if (!tabs.length || !wrap) return;
+
+  // JS is on: stack the cards in one spot (keeps the space reserved) and start closed
+  wrap.classList.add('is-js');
+
+  function panelFor(tab) { return document.getElementById(tab.getAttribute('aria-controls')); }
+
+  function placeArrow(tab, panel) {
+    var t = tab.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+    var x = t.left + t.width / 2 - w.left;
+    panel.style.setProperty('--ax', Math.max(24, Math.min(w.width - 24, x)) + 'px');
+  }
+
+  function reset() {
+    tabs.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); t.classList.remove('is-active'); });
+    panels.forEach(function (p) { p.classList.remove('is-open'); });
+  }
+
+  // closed = no space reserved; open = the area grows to fit the card (and eases back when closed)
+  function closeAll() {
+    reset();
+    wrap.style.height = '0px';
+  }
+
+  function openTab(tab) {
+    reset();
+    var panel = panelFor(tab);
+    panel.classList.add('is-open');
+    tab.setAttribute('aria-expanded', 'true');
+    tab.classList.add('is-active');
+    placeArrow(tab, panel);
+    wrap.style.height = panel.offsetHeight + 'px';
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      if (tab.getAttribute('aria-expanded') === 'true') closeAll(); else openTab(tab);
+    });
+  });
+
+  panels.forEach(function (panel) {
+    panel.querySelector('.pf-close').addEventListener('click', function () {
+      var tab = tabs.filter(function (t) { return panelFor(t) === panel; })[0];
+      closeAll();
+      if (tab) tab.focus();
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var open = tabs.filter(function (t) { return t.getAttribute('aria-expanded') === 'true'; })[0];
+    if (open) { closeAll(); open.focus(); }
+  });
+
+  window.addEventListener('resize', function () {
+    var open = tabs.filter(function (t) { return t.getAttribute('aria-expanded') === 'true'; })[0];
+    if (open) { var p = panelFor(open); placeArrow(open, p); wrap.style.height = p.offsetHeight + 'px'; }
+  });
+})();
+</script>
 {% endblock %}
