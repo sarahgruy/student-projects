@@ -3,6 +3,8 @@
 {% block title %}Profile{% endblock %}
 {% block bodyclass %}page-profile{% endblock %}
 {% block content %}
+{# Where "Click here" goes (change this one line) #}
+{% set chat_link = 'REPLACE-WITH-YOUR-LINK' %}
 <div class="stage">
   <svg class="deco p-a" style="--petal:#f1c9bd"><use href="#flower"/></svg>
   <svg class="deco p-b" style="--leaf:#9db08f"><use href="#sprig"/></svg>
@@ -94,21 +96,27 @@
           <h2>Contact</h2>
           <button type="button" class="pf-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
         </header>
-        <div class="pf-body pf-center">
-          <div class="pf-text">
-            <p>want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
-            {% if socials %}{{ social_icons(socials, 'pf-icons') }}{% endif %}
-            <a class="pf-btn" href="{{ url_for('contact') }}">Go to contact <span aria-hidden="true">&rarr;</span></a>
-          </div>
+        <div class="pf-body pf-chat">
+          <p class="pf-chat-line">Want to chat? <a href="{{ chat_link }}" target="_blank" rel="noopener">Click here</a></p>
+          {{ social_icons(socials, 'pf-socials') }}
         </div>
       </article>
     </div>
-
     <div class="pf-divider" aria-hidden="true"><span></span><i>&#10022;</i><span></span></div>
     <p class="band-motto">&ldquo;To be is to do. Do be do be do&rdquo;</p>
-    <p class="band-foot">want to chat? <a href="{{ url_for('contact') }}">say hello</a> :)</p>
   </section>
 </div>
+
+<style>
+  /* centered "Want to chat?" line and social icons */
+  .pf-chat { text-align: center; }
+  .pf-chat-line { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: #6b4a3f;
+                  margin: 0 0 14px; text-align: center; }
+  .pf-chat-line a { color: #b97560; font-weight: 700; font-style: italic; text-decoration: underline; text-underline-offset: 4px; }
+  .pf-chat-line a:hover { color: #8f5744; }
+  .pf-socials { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap;
+                list-style: none; padding: 0; margin: 0 auto; }
+</style>
 
 <script>
 (function () {

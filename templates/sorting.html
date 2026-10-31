@@ -17,34 +17,74 @@
     <button class="b btn-outline" id="nav-quick" onclick="switchAlgorithm('quick')" style="width: auto;">Quicksort</button>
   </div>
 
-  <div class="grid" style="display: grid; grid-template-columns: 3fr 1.5fr; gap: 20px; align-items: start;">
+  <div class="grid" style="display: grid; grid-template-columns: 3fr 1.5fr; gap: 20px; align-items: stretch;">
 
     <!-- Visualizer Canvas Area -->
-    <section class="panel">
+    <section class="panel" style="display: flex; flex-direction: column;">
       <h2>Visualization</h2>
-      <div id="visualizer-container" style="display: flex; align-items: flex-end; justify-content: center; height: 375px; background: #f0f0f0; border-radius: 8px; padding: 20px; gap: 12px;">
+      <div id="visualizer-container" style="display: flex; align-items: flex-end; justify-content: center; flex: 1; min-height: 390px; background: #f0f0f0; border-radius: 10px; padding: 20px; gap: 15px;">
         <!-- Columns are injected dynamically here -->
       </div>
     </section>
 
     <!-- Controls & Status -->
-    <div>
-      <section class="panel" style="text-align: center;">
+    <div style="display: flex; flex-direction: column;">
+      <section class="panel" style="text-align: center; flex: 1;">
         <h2 style="font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: #4a3f3c; margin-bottom: 18px;">Controls</h2>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
           <button id="generate-btn" onclick="generateRandomArray()"
             style="background: #b97560; color: #fff; border: 2px solid #b97560; border-radius: 999px; padding: 12px 28px; font-family: 'Quicksand', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 14px rgba(185,117,96,0.35);">
             Generate Random Array
           </button>
+
+          <!-- Custom array input -->
+          <div style="width: 100%; max-width: 260px;">
+            <label for="custom-input" style="display: block; font-family: 'Quicksand', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: #4a3f3c; margin-bottom: 6px;">Your Own Array</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" id="custom-input" placeholder="e.g. 23,16,50,35" autocomplete="off"
+                onkeydown="if (event.key === 'Enter') applyCustomArray()"
+                style="flex: 1; min-width: 0; border: 1.5px solid #b97560; border-radius: 999px; padding: 9px 14px; font-family: 'Quicksand', sans-serif; font-size: 14px; color: #4a3f3c; background: #fff; outline: none;">
+              <button id="custom-btn" onclick="applyCustomArray()"
+                style="background: #b97560; color: #fff; border: 2px solid #b97560; border-radius: 999px; padding: 9px 16px; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer;">
+                Set
+              </button>
+            </div>
+            <div style="font-size: 11px; color: #999; margin-top: 4px;">Whole numbers 1&ndash;50, separated by commas.</div>
+          </div>
           <button id="sort-btn" onclick="startSortingRun()"
             style="background: #fff; color: #b97560; border: 1.5px solid #b97560; border-radius: 999px; padding: 11px 28px; font-family: 'Quicksand', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer;">
             Start Bubble Sort
           </button>
+
+          <!-- Pause / Play + Restart -->
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button id="pause-btn" onclick="togglePause()" disabled
+              style="background: #fff; color: #b97560; border: 1.5px solid #b97560; border-radius: 999px; padding: 9px 22px; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; opacity: 0.5;">
+              &#10074;&#10074; Pause
+            </button>
+            <button id="restart-btn" onclick="restartRun()" disabled
+              style="background: #fff; color: #b97560; border: 1.5px solid #b97560; border-radius: 999px; padding: 9px 22px; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; opacity: 0.5;">
+              &#8635; Restart
+            </button>
+          </div>
+
+          <!-- Speed (0.5x - 2.0x) -->
+          <div style="width: 100%; max-width: 240px;">
+            <label for="speed-slider" style="display: flex; justify-content: space-between; align-items: baseline; font-family: 'Quicksand', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: #4a3f3c; margin-bottom: 6px;">
+              <span>Speed</span>
+              <span id="speed-val" style="letter-spacing: 0.02em; font-size: 14px; color: #b97560;">1.0&times;</span>
+            </label>
+            <input type="range" id="speed-slider" min="0.5" max="2" step="0.1" value="1" oninput="setSpeed(this.value)"
+              style="width: 100%; accent-color: #b97560; cursor: pointer;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #999; margin-top: 2px;">
+              <span>0.5&times;</span><span>1&times;</span><span>2&times;</span>
+            </div>
+          </div>
         </div>
 
-        <div class="group" style="margin-top: 25px; text-align: left;">
+        <div class="group" style="margin-top: 17px; text-align: left;">
           <h3>Execution Status</h3>
-          <div id="status-box" style="background: #fdf0ed; color: #5a4b48; border: 1px solid #f3d4cc; padding: 15px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 14px; min-height: 120px; line-height: 1.5;">
+          <div id="status-box" style="background: #fdf0ed; color: #5a4b48; border: 1px solid #f3d4cc; padding: 10px 12px; border-radius: 8px; font-family: 'Quicksand', sans-serif; font-size: 13px; min-height: 60px; line-height: 1.4;">
             Select an algorithm and click "Start".
           </div>
         </div>
@@ -68,8 +108,21 @@
   const COLOR_SORTED  = "#9bc2d1";  // grey-blue (finished)
   const COLOR_MARK    = "#f4a259";  // amber (pivot / key / current minimum)
 
-  // Increase this number to make every animation slower, decrease to speed up
-  const SPEED = 2;
+  // Playback speed, controlled by the slider (0.5x - 2.0x). 1x = the original pace.
+  const BASE_SLOWDOWN = 2;      // original pace multiplier (what SPEED = 2 used to do)
+  let speed = 1;                // current playback speed
+  let isPaused = false;
+  let resumeWaiters = [];
+  const pauseBtn = document.getElementById("pause-btn");
+  const restartBtn = document.getElementById("restart-btn");
+
+  // Restart support: every run has a token; bumping it cancels the run that is in progress
+  let runToken = 0;
+  let originalArray = [];     // the array as it was before the sort started
+  let hasRun = false;         // true once a run has been started on the current array
+  let activeRun = null;       // promise of the run in progress
+  let isRestarting = false;
+  class AbortRun extends Error {}
 
   const algoMetadata = {
     bubble: { title: "Bubble Sort", desc: "Compares adjacent elements and swaps them if they are in the wrong order. Large values 'bubble' to the top." },
@@ -79,14 +132,118 @@
     quick: { title: "Quicksort", desc: "Picks an element as a pivot and partitions the array around it, sorting sub-arrays recursively." }
   };
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms * SPEED));
+  // Waits `ms` (at 1x pace). Stops counting while paused and follows speed changes live.
+  async function sleep(ms) {
+    const myRun = runToken;
+    let remaining = ms * BASE_SLOWDOWN;
+    const TICK = 40;
+    while (remaining > 0) {
+      if (isPaused) await new Promise((resolve) => resumeWaiters.push(resolve));
+      if (myRun !== runToken) throw new AbortRun();
+      await new Promise((resolve) => setTimeout(resolve, TICK));
+      if (myRun !== runToken) throw new AbortRun();
+      if (!isPaused) remaining -= TICK * speed;
+    }
+    if (myRun !== runToken) throw new AbortRun();
+  }
+
+  function setSpeed(value) {
+    speed = parseFloat(value);
+    document.getElementById("speed-val").innerHTML = speed.toFixed(1) + "&times;";
+  }
+
+  function togglePause() {
+    if (!isRunning) return;
+    isPaused = !isPaused;
+    if (isPaused) {
+      pauseBtn.innerHTML = "&#9654; Play";
+      setControlsLocked(false);   // paused = not actively sorting, so other controls are usable
+      setSortBtnLocked(false);
+    } else {
+      pauseBtn.innerHTML = "&#10074;&#10074; Pause";
+      setControlsLocked(true);
+      setSortBtnLocked(true);
+      resumeWaiters.forEach((resolve) => resolve());
+      resumeWaiters = [];
+    }
+  }
+
+  function setPauseBtnEnabled(on) {
+    pauseBtn.disabled = !on;
+    pauseBtn.style.opacity = on ? "1" : "0.5";
+    pauseBtn.style.cursor = on ? "pointer" : "default";
+    if (!on) { isPaused = false; pauseBtn.innerHTML = "&#10074;&#10074; Pause"; }
+  }
+
+  // Locks / unlocks Generate, the custom array input and the algorithm tabs
+  function setControlsLocked(locked) {
+    generateBtn.disabled = locked;
+    generateBtn.style.opacity = locked ? "0.6" : "1";
+    setInputsLocked(locked);
+    Object.keys(algoMetadata).forEach((k) => {
+      const btn = document.getElementById(`nav-${k}`);
+      btn.disabled = locked;
+      btn.style.opacity = locked ? "0.6" : "1";
+    });
+  }
+
+  function setSortBtnLocked(locked) {
+    sortBtn.disabled = locked;
+    sortBtn.style.opacity = locked ? "0.6" : "1";
+  }
+
+  // Stops a run that is paused (or running) so something else can take over
+  async function cancelRun() {
+    if (!isRunning) return;
+    runToken++;                                    // cancel the run in progress
+    resumeWaiters.forEach((resolve) => resolve()); // wake it up if paused so it can stop
+    resumeWaiters = [];
+    isPaused = false;
+    if (activeRun) { try { await activeRun; } catch (e) {} }
+    isRunning = false;
+    setPauseBtnEnabled(false);
+    setControlsLocked(false);
+    setSortBtnLocked(false);
+  }
 
   function updateSortBtnLabel() {
     sortBtn.innerText = `Start ${algoMetadata[currentAlgo].title}`;
   }
 
-  function switchAlgorithm(algoKey) {
-    if (isRunning) return;
+  function setRestartBtnEnabled(on) {
+    restartBtn.disabled = !on;
+    restartBtn.style.opacity = on ? "1" : "0.5";
+    restartBtn.style.cursor = on ? "pointer" : "default";
+  }
+
+  // Put the bars back to the array we started with
+  function restoreOriginalArray() {
+    array = originalArray.slice();
+    for (let i = 0; i < array.length; i++) {
+      updateVisualDisplay(i, array[i]);
+      setBarColor(i, COLOR_DEFAULT);
+    }
+  }
+
+  async function restartRun() {
+    if (!hasRun || isRestarting) return;
+    isRestarting = true;
+    runToken++;                                   // cancel the run in progress (if any)
+    resumeWaiters.forEach((resolve) => resolve()); // wake it up if it was paused so it can stop
+    resumeWaiters = [];
+    isPaused = false;
+    pauseBtn.innerHTML = "&#10074;&#10074; Pause";
+    if (activeRun) { try { await activeRun; } catch (e) {} }
+    restoreOriginalArray();
+    isRunning = false;
+    statusBox.innerHTML = `Restarted with the same array. Running ${algoMetadata[currentAlgo].title} again.`;
+    isRestarting = false;
+    startSortingRun();
+  }
+
+  async function switchAlgorithm(algoKey) {
+    if (isRunning && !isPaused) return;
+    await cancelRun();
     currentAlgo = algoKey;
 
     Object.keys(algoMetadata).forEach(k => {
@@ -97,24 +254,27 @@
     document.getElementById("algo-title").innerText = algoMetadata[algoKey].title;
     document.getElementById("algo-desc").innerText = algoMetadata[algoKey].desc;
     updateSortBtnLabel();
-    generateRandomArray();
+    await generateRandomArray();
     statusBox.innerHTML = `Switched to ${algoMetadata[algoKey].title}. Ready to visualize.`;
   }
 
-  function generateRandomArray() {
-    if (isRunning) return;
-    array = [];
+  const MAX_VALUE = 50;
+  const MAX_ITEMS = 10;
+
+  // Draws the bars for a given list of values
+  function buildBars(values) {
+    array = values.slice();
+    hasRun = false;
+    setRestartBtnEnabled(false);
     container.innerHTML = "";
+    const barWidth = values.length > 7 ? 40 : 55;
 
-    for (let i = 0; i < 5; i++) {
-      const value = Math.floor(Math.random() * 41) + 10; // 10 to 50
-      array.push(value);
-
+    values.forEach((value, i) => {
       const barWrap = document.createElement("div");
       barWrap.style.display = "flex";
       barWrap.style.flexDirection = "column";
       barWrap.style.alignItems = "center";
-      barWrap.style.width = "55px";
+      barWrap.style.width = `${barWidth}px`;
       barWrap.id = `bar-wrap-${i}`;
 
       const valueTag = document.createElement("div");
@@ -143,9 +303,61 @@
       barWrap.appendChild(bar);
       barWrap.appendChild(idxLabel);
       container.appendChild(barWrap);
-    }
-    statusBox.innerHTML = `Generated new array. Ready to run ${algoMetadata[currentAlgo].title}.`;
+    });
+    originalArray = array.slice();
     sortBtn.disabled = false;
+  }
+
+  async function generateRandomArray() {
+    if (isRunning && !isPaused) return;
+    await cancelRun();
+    const values = [];
+    for (let i = 0; i < 5; i++) {
+      values.push(Math.floor(Math.random() * 41) + 10); // 10 to 50
+    }
+    buildBars(values);
+    statusBox.innerHTML = `Generated new array. Ready to run ${algoMetadata[currentAlgo].title}.`;
+  }
+
+  // Reads "23,16,50,35" from the input box and shows it on the board
+  async function applyCustomArray() {
+    if (isRunning && !isPaused) return;
+    const input = document.getElementById("custom-input");
+    const parts = input.value.split(/[\s,;]+/).filter(p => p !== "");
+
+    if (parts.length < 2) {
+      statusBox.innerHTML = "<strong>Invalid input:</strong> Enter at least 2 numbers separated by commas, e.g. 23,16,50,35.";
+      return;
+    }
+    if (parts.length > MAX_ITEMS) {
+      statusBox.innerHTML = `<strong>Too many values:</strong> You entered ${parts.length}. The maximum is ${MAX_ITEMS}.`;
+      return;
+    }
+    const values = [];
+    for (const p of parts) {
+      if (!/^\d+$/.test(p)) {
+        statusBox.innerHTML = `<strong>Invalid input:</strong> "${p.replace(/[<>&"]/g, "")}" is not a whole number.`;
+        return;
+      }
+      const n = parseInt(p, 10);
+      if (n < 1 || n > MAX_VALUE) {
+        statusBox.innerHTML = `<strong>Out of range:</strong> ${n} is not allowed. Values must be between 1 and ${MAX_VALUE}.`;
+        return;
+      }
+      values.push(n);
+    }
+
+    await cancelRun();   // only cancel a paused run once the input is known to be valid
+    buildBars(values);
+    statusBox.innerHTML = `Loaded your array [${values.join(", ")}]. Ready to run ${algoMetadata[currentAlgo].title}.`;
+  }
+
+  // Lock / unlock the array inputs while a sort is running
+  function setInputsLocked(locked) {
+    const customInput = document.getElementById("custom-input");
+    const customBtn = document.getElementById("custom-btn");
+    customInput.disabled = customBtn.disabled = locked;
+    customBtn.style.opacity = customInput.style.opacity = locked ? "0.6" : "1";
   }
 
   function setBarColor(index, color) {
@@ -163,26 +375,41 @@
   }
 
   async function startSortingRun() {
-    if (isRunning) return;
+    if (isRunning && !isPaused) return;
+    if (isRunning) await cancelRun();   // Start pressed while paused: drop the paused run, begin a new one
     isRunning = true;
-    sortBtn.disabled = true;
-    generateBtn.disabled = true;
-    sortBtn.style.opacity = generateBtn.style.opacity = "0.6";
+    if (!hasRun) originalArray = array.slice();   // remember the starting array (first run only)
+    hasRun = true;
+    setSortBtnLocked(true);
+    setControlsLocked(true);
+    setPauseBtnEnabled(true);
+    setRestartBtnEnabled(true);
 
     // reset colors in case of a previous run
     for (let i = 0; i < array.length; i++) setBarColor(i, COLOR_DEFAULT);
 
-    if (currentAlgo === 'bubble') await runBubbleSort();
-    else if (currentAlgo === 'selection') await runSelectionSort();
-    else if (currentAlgo === 'insertion') await runInsertionSort();
-    else if (currentAlgo === 'merge') await runMergeSort();
-    else if (currentAlgo === 'quick') await runQuickSortRun();
+    activeRun = (async () => {
+      try {
+        if (currentAlgo === 'bubble') await runBubbleSort();
+        else if (currentAlgo === 'selection') await runSelectionSort();
+        else if (currentAlgo === 'insertion') await runInsertionSort();
+        else if (currentAlgo === 'merge') await runMergeSort();
+        else if (currentAlgo === 'quick') await runQuickSortRun();
+        return true;
+      } catch (e) {
+        if (e instanceof AbortRun) return false;   // cancelled by Restart
+        throw e;
+      }
+    })();
+    const finished = await activeRun;
+    if (!finished) return;                         // Restart takes over from here
 
     // Everything finished: mark all bars as sorted
     for (let i = 0; i < array.length; i++) setBarColor(i, COLOR_SORTED);
     isRunning = false;
-    generateBtn.disabled = false;
-    sortBtn.style.opacity = generateBtn.style.opacity = "1";
+    setPauseBtnEnabled(false);
+    setControlsLocked(false);
+    sortBtn.style.opacity = "1";   // Start stays disabled until a new array is loaded
   }
 
   /* --- ALGORITHMS --- */

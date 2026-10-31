@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Binary Tree{% endblock %}
+{% block bodyclass %}page-tool page-stack{% endblock %}
+{% block content %}
+
+<section class="tool-card ll st">
+  <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
+  <h1>Binary Tree</h1>
+  <p class="welcome">Every node has at most two children: a left one and a right one. Set the root first, then add children under any parent. Deleting a node also removes everything below it.</p>
+
+    {# messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for kind, msg in messages %}<div class="result {{ kind }}" role="status">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+
+    {# tree #}
+    <div class="grid wide-ops">
+        <section class="panel">
+            <h2>The Tree</h2>
+            <div class="stats">
+                <span>Size <b>{{ size }}</b></span>
+                <span>Height <b>{{ height }}</b></span>
+                <span>Root <b>{{ root_value if root_value is not none else 'null' }}</b></span>
+            </div>
+            <div class="stack-wrap tree-wrap">
+                {% if drawing.nodes %}
+                    <div class="tree-scroll">
+                        <svg width="{{ drawing.width }}" height="{{ drawing.height }}"
+                             {style="width: {{ drawing.width }}px; max-width: 100%; min-width: {{ (drawing.width * 0.75)|int }}px; height: auto;"}
+                             viewBox="0 0 {{ drawing.width }} {{ drawing.height }}" role="img" aria-label="Binary tree">
+                            {% for e in drawing.edges %}
+                                <line class="tree-edge" x1="{{ e.x1 }}" y1="{{ e.y1 }}" x2="{{ e.x2 }}" y2="{{ e.y2 }}"/>
+                            {% endfor %}
+                            {% for n in drawing.nodes %}
+                                <g class="tree-node {{ n.state }}">
+                                    <rect x="{{ n.x - drawing.half_w }}" y="{{ n.y - drawing.half_h }}"
+                                          width="{{ drawing.w }}" height="{{ drawing.h }}" rx="{{ drawing.half_h }}"/>
+                                    <text x="{{ n.x }}" y="{{ n.y }}" text-anchor="middle" dominant-baseline="central">{{ n.data }}</text>
+                                </g>
+                            {% endfor %}
+                        </svg>
+                    </div>
+                {% else %}
+                    <p class="empty">The tree is empty. Set a root, or load the sample.</p>
+                {% endif %}
+            </div>
+            {% if traversal %}
+                <div class="trav-box"><b>{{ trav_name }}:</b> {{ traversal|join(', ') }}</div>
+            {% endif %}
+        </section>
+
+        <div>
+            <section class="panel">
+                <h2>Operations</h2>
+                <form method="post" action="{{ url_for('binary_tree.tree_page') }}">
+                    {# Pressing Enter in a text box: sets the root if there is none, otherwise searches #}
+                    <button class="sr" type="submit" name="action" value="{{ 'search' if size else 'set_root' }}" tabindex="-1" aria-hidden="true">Go</button>
+                    <div class="fields one">
+                        <div><label for="value">Value</label>
+                            <input type="text" id="value" name="value" autocomplete="off" autofocus maxlength="10" placeholder="e.g. A (max 10 characters)"></div>
+                    </div>
+                    <div class="fields one" style="margin-top: 18px;">
+                        <div><label for="parent">Parent (for Insert Left / Right)</label>
+                            <input type="text" id="parent" name="parent" autocomplete="off" maxlength="10" placeholder="e.g. R"></div>
+                    </div>
+                    <div class="group"><h3>Add</h3>
+                        <div class="btns one-line">
+                            <button class="b add" type="submit" name="action" value="set_root"{% if size %} disabled title="The root is already set. Delete it to set a new one."{% endif %}>Set Root</button>
+                            <button class="b add" type="submit" name="action" value="insert_left">Insert Left</button>
+                            <button class="b add" type="submit" name="action" value="insert_right">Insert Right</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Remove &amp; Find</h3>
+                        <div class="btns one-line">
+                            <button class="b del" type="submit" name="action" value="delete">Delete</button>
+                            <button class="b" type="submit" name="action" value="search">Search</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Traversals</h3>
+                        <div class="btns one-line">
+                            <button class="b" type="submit" name="action" value="pre">Pre-order</button>
+                            <button class="b" type="submit" name="action" value="in">In-order</button>
+                            <button class="b" type="submit" name="action" value="post">Post-order</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Tree</h3>
+                        <div class="btns one-line">
+                            <button class="b" type="submit" name="action" value="sample">Load sample</button>
+                            <button class="b" type="submit" name="action" value="clear">Clear tree</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

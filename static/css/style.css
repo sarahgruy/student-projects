@@ -179,7 +179,7 @@ img{max-width:100%}
   display:block;max-width:660px;margin:22px auto;padding:13px 22px;text-align:center;color:var(--muted);
   border:1.5px dashed var(--gold);border-radius:14px;background:rgba(255,250,245,.7);font-size:1.1rem;
 }
-.cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:48px 24px;margin-top:56px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 24px;margin-top:56px}
 .work-card{
   position:relative;display:block;text-decoration:none;color:var(--ink);padding:12px 12px 6px;border-radius:8px;
   background:var(--paper);box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;
@@ -739,3 +739,29 @@ input:focus,textarea:focus{outline:none;border-color:var(--terracotta);box-shado
 .works-wrap h1{font-weight:700}
 .page-works .welcome{border:1.5px dashed rgba(181,117,90,.6);background:rgba(255,250,245,.8);color:#6f5a50}
 .page-works .work-card{box-shadow:0 10px 26px rgba(107,69,53,.14)}
+
+
+
+  /* Keep each group of operation buttons on a single line */
+.btns.one-line { flex-wrap: nowrap; justify-content: center; gap: 8px; }
+.btns.one-line .b { padding-left: 14px; padding-right: 14px; white-space: nowrap; }
+.btns .b:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* Slim operations panel on wide screens, so the tree gets the extra room */
+@media (min-width: 1000px) {
+.grid.wide-ops { grid-template-columns: minmax(0, 1fr) 380px !important; }
+}
+
+  /* The picture of the tree */
+.stack-wrap.tree-wrap { display: block !important; width: 100% !important; max-width: none !important;
+                        margin-left: 0 !important; margin-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+.tree-scroll { width: 100%; overflow-x: auto; text-align: center; padding: 6px 0; }
+.tree-scroll svg { display: block; margin: 0 auto; }
+.tree-edge { stroke: #d9b5a8; stroke-width: 2; }
+.tree-node rect { fill: #f7e3dc; stroke: #b97560; stroke-width: 2; transition: fill .2s; }
+.tree-node text { fill: #6b4a3f; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; }
+.tree-node.new rect { fill: #b97560; }
+.tree-node.found rect { fill: #e9a894; }
+.tree-node.new text { fill: #fff; }
+.trav-box { margin-top: 14px; padding: 10px 14px; border: 1px dashed #d9b5a8; border-radius: 12px;
+            background: #fbf0ec; color: #6b4a3f; font-size: 14px; text-align: center; }

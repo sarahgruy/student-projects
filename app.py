@@ -7,6 +7,7 @@ from routes.Lab_3 import linked_bp
 from routes.stack import stack_bp
 from routes.area import area_bp
 from routes.queue_dq import queue_bp
+from routes.tree import tree_bp
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
@@ -14,6 +15,7 @@ app.register_blueprint(linked_bp)
 app.register_blueprint(stack_bp)
 app.register_blueprint(area_bp)
 app.register_blueprint(queue_bp)
+app.register_blueprint(tree_bp)
 
 @app.context_processor
 def inject_globals():

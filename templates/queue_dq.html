@@ -2,13 +2,19 @@
 {% block title %}Queue{% endblock %}
 {% block bodyclass %}page-tool page-stack{% endblock %}
 {% block content %}
+<style>
+  /* Keep each group of operation buttons on a single line */
+  .btns.one-line { flex-wrap: nowrap; justify-content: center; gap: 8px; }
+  .btns.one-line .b { padding-left: 14px; padding-right: 14px; white-space: nowrap; }
+</style>
+
 <section class="tool-card ll st">
   <div class="back-row"><a class="back-link" href="{{ url_for('works') }}">&larr; Back to Works</a></div>
   <h1>Queue and Dequeue</h1>
   <p class="welcome">A queue is first in, first out: the first value you add is the first one you remove.</p>
 
     {# messages #}
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% with messages = get_flashed_messages(with_categories=true, category_filter=['error', 'success']) %}
         {% for kind, msg in messages %}<div class="result {{ kind }}" role="status">{{ msg }}</div>{% endfor %}
     {% endwith %}
 
@@ -46,16 +52,88 @@
                             <input type="text" id="value" name="value" autocomplete="off" autofocus placeholder="e.g. 25"></div>
                     </div>
                     <div class="group"><h3>Add &amp; Remove</h3>
-                        <div class="btns">
+                        <div class="btns one-line">
                             <button class="b add" type="submit" name="action" value="enqueue">Enqueue</button>
                             <button class="b del" type="submit" name="action" value="dequeue">Dequeue</button>
                             <button class="b" type="submit" name="action" value="peek">Peek</button>
                         </div>
                     </div>
                     <div class="group"><h3>Queue</h3>
-                        <div class="btns">
+                        <div class="btns one-line">
                             <button class="b" type="submit" name="action" value="sample">Load sample</button>
                             <button class="b" type="submit" name="action" value="clear">Clear queue</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
+
+
+{# ============================================================ #}
+{# Double-ended queue (its own box, no Back to Works link)       #}
+{# ============================================================ #}
+<section class="tool-card ll st" id="deque" style="margin-top: 28px;">
+  <h1>Double-Ended Queue (Deque)</h1>
+  <p class="welcome">A deque lets you add, remove, and peek at values at both ends: the front and the rear.</p>
+
+    {# deque messages #}
+    {% with messages = get_flashed_messages(with_categories=true, category_filter=['dq_error']) %}
+        {% for kind, msg in messages %}<div class="result error" role="status">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+
+    <div class="grid">
+        <section class="panel">
+            <h2>The Deque</h2>
+            <div class="stats">
+                <span>Size <b>{{ deque_items|length }}</b></span>
+                <span>Front <b>{{ deque_items[0] if deque_items else 'null' }}</b></span>
+                <span>Rear <b>{{ deque_items[-1] if deque_items else 'null' }}</b></span>
+            </div>
+            <div class="stack-wrap">
+                {% if deque_items %}
+                    <ol class="vstack" aria-label="Deque, front first">
+                        {% for item in deque_items %}
+                            <li class="slot {% if (hk == 'dq_new_front' and loop.first) or (hk == 'dq_new_rear' and loop.last) %}new{% elif (hk == 'dq_peek_front' and loop.first) or (hk == 'dq_peek_rear' and loop.last) %}peek{% endif %}">
+                                <span class="slot-val">{{ item }}</span>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p class="empty">The deque is empty. Add a value, or load the sample.</p>
+                {% endif %}
+            </div>
+        </section>
+
+        <div>
+            <section class="panel">
+                <h2>Operations</h2>
+                <form method="post" action="{{ url_for('queue_dq.queue_dq_page', _anchor='deque') }}">
+                    {# Pressing Enter in the text box adds to the rear #}
+                    <button class="sr" type="submit" name="action" value="dq_add_rear" tabindex="-1" aria-hidden="true">Add Rear</button>
+                    <div class="fields one">
+                        <div><label for="dq-value">Value</label>
+                            <input type="text" id="dq-value" name="value" autocomplete="off" placeholder="e.g. 25"></div>
+                    </div>
+                    <div class="group"><h3>Front End</h3>
+                        <div class="btns one-line">
+                            <button class="b add" type="submit" name="action" value="dq_add_front">Add</button>
+                            <button class="b del" type="submit" name="action" value="dq_remove_front">Remove</button>
+                            <button class="b" type="submit" name="action" value="dq_peek_front">Peek</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Rear End</h3>
+                        <div class="btns one-line">
+                            <button class="b add" type="submit" name="action" value="dq_add_rear">Add</button>
+                            <button class="b del" type="submit" name="action" value="dq_remove_rear">Remove</button>
+                            <button class="b" type="submit" name="action" value="dq_peek_rear">Peek</button>
+                        </div>
+                    </div>
+                    <div class="group"><h3>Deque</h3>
+                        <div class="btns one-line">
+                            <button class="b" type="submit" name="action" value="dq_sample">Load sample</button>
+                            <button class="b" type="submit" name="action" value="dq_clear">Clear deque</button>
                         </div>
                     </div>
                 </form>
